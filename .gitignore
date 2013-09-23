@@ -2,6 +2,13 @@
 *.slo
 *.lo
 *.o
+*.obj
+*.pdb
+*.dll
+*.vshost
+*.exe
+*.cache
+
 
 # Compiled Dynamic libraries
 *.so
