@@ -1,0 +1,9 @@
+D:\soad\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.dll
+D:\soad\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.pdb
+D:\soad\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.dll
+D:\soad\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.pdb
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.dll
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.pdb
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.csprojResolveAssemblyReference.cache
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.dll
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\DungeonPrisonLib\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.pdb
