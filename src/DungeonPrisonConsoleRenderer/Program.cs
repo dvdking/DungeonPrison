@@ -9,8 +9,8 @@ namespace DungeonPrisonConsoleRenderer
     {
         static void Main(string[] args)
         {
-            GameManager gameManager = new GameManager(new ConsoleRenderer(14,10), new ConsoleInput());
-            gameManager.Run();
+            GameManager.CreateInstance(new ConsoleRenderer(14,10), new ConsoleInput());
+            GameManager.Instance.Run();
         }
     }
 }

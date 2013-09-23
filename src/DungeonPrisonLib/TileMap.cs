@@ -33,6 +33,13 @@ namespace DungeonPrisonLib
             return Map[x, y];
         }
 
+        public bool IsSolid(int x, int y)
+        {
+            var tile = GetTile(x, y).Type;
+
+            return tile == TileType.Wall;
+        }
+
         public bool InBounds(int x, int y)
         {
             return x >= 0 && y >= 0 && x < Width && y < Height;
@@ -44,26 +51,26 @@ namespace DungeonPrisonLib
             {
                 string[] lines = File.ReadAllLines(path);
 
-            Map = new Tile[lines.Length, lines[0].Length];
+                Map = new Tile[lines.Length, lines[0].Length];
 
-            Width = lines.Length;
-            Height = lines[0].Length;
+                Width = lines.Length;
+                Height = lines[0].Length;
 
-            for (int i = 0; i < lines.Length; i++)
-            {
-                for (int j = 0; j < lines[i].Length; j++)
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    switch (lines[i][j])
+                    for (int j = 0; j < lines[i].Length; j++)
                     {
-                        case '#':
-                            Map[i, j] = new Tile { Type = TileType.Wall };
-                            break;
-                        default:
-                            Map[i, j] = new Tile { Type = TileType.Ground };
-                            break;
+                        switch (lines[i][j])
+                        {
+                            case '#':
+                                Map[i, j] = new Tile { Type = TileType.Wall };
+                                break;
+                            default:
+                                Map[i, j] = new Tile { Type = TileType.Ground };
+                                break;
+                        }
                     }
                 }
-            }
             }
             catch(IOException e)
             {

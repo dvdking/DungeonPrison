@@ -5,10 +5,8 @@ using System.Text;
 
 namespace DungeonPrisonLib
 {
-    class Creature:Actor
+    struct AttackInfo
     {
-        public override void Update(float delta, TileMap tileMap)
-        {
-        }
+        public int Damage;
     }
 }

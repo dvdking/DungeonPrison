@@ -7,6 +7,17 @@ namespace DungeonPrisonLib
 {
     public class GameManager
     {
+        static public GameManager Instance
+        {
+            get;
+            private set;
+        }
+
+        static public void CreateInstance(IRenderer renderer, IInput input)
+        {
+            Instance = new GameManager(renderer, input);
+        }
+
         private bool _exit;
 
         IRenderer _renderer;
@@ -15,15 +26,26 @@ namespace DungeonPrisonLib
         TileMap _tileMap;
 
         List<Actor> _actors;
+
+        Queue<Actor> _actorsToAdd;
+        Queue<Actor> _actorsToRemove;
+
         Player _player;
+
         public GameManager(IRenderer renderer, IInput input)
         {
             _renderer = renderer;
             _input = input;
 
             _actors = new List<Actor>(128);
+            _actorsToAdd = new Queue<Actor>(16);
+            _actorsToRemove = new Queue<Actor>(16);
+
             _player = new Player(input);
             _player.Name = "Player";
+            _player.X = 4;
+            _player.Y = 2;
+            _actors.Add(_player);
 
             var act = new Creature();
             act.Name = "SomeGuy";
@@ -37,21 +59,44 @@ namespace DungeonPrisonLib
 
         public void Run()
         {
+            
             while (!_exit)
-            {
-                Update();
+            {                   
                 Draw();
-
                 _input.Update();
+                Update();                    
             }
+        }
+
+        public Actor GetActorAtPosition(int x, int y)
+        {
+            foreach (var actor in _actors)
+            {
+                if (actor.X == x && actor.Y == y)
+                {
+                    return actor;
+                }
+            }
+            return null;
+        }
+
+        public void DestroyObject(Actor actor)
+        {
+            _actorsToRemove.Enqueue(actor);
         }
 
         private void Update()
         {
-            _player.Update(0.0f);
+            foreach (var actor in _actorsToRemove)
+            {
+                _actors.Remove(actor);
+            }
+            _actorsToRemove.Clear();
+
             foreach (var actor in _actors)
             {
-                actor.Update(0.0f);
+                if(actor.IsAlive)
+                    actor.Update(0.0f, _tileMap);
             }
         }
         private void Draw()

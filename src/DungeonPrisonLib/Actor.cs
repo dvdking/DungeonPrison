@@ -7,10 +7,28 @@ namespace DungeonPrisonLib
 {
     public abstract class Actor
     {
+        public bool IsAlive { get; private set; }
+
         public string Name;
 
         public int X, Y;
 
-        public abstract void Update(float delta);
+        public abstract void Update(float delta, TileMap tileMap);
+
+        public Actor()
+        {
+            IsAlive = true;
+        }
+
+        internal void Attack(Actor actor, AttackInfo attackInfo)
+        {
+            actor.Destroy();
+        }
+
+        internal void Destroy()
+        {
+            GameManager.Instance.DestroyObject(this);
+            IsAlive = false;
+        }
     }
 }

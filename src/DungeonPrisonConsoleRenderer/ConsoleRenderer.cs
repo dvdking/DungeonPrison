@@ -47,17 +47,38 @@ namespace DungeonPrisonConsoleRenderer
             _buffer = new GraphicsInfo[_screenWidth, _screenHeight];
             _oldBuffer = new GraphicsInfo[_screenWidth, _screenHeight];
 
+            InitCharMap();
+            InitTileGraphicsMap();
+
+
+            Console.CursorVisible = false;
+
+            Debug.Assert(_screenWidth >= Settings.PlayerView.Width, "Too small screen size");
+            Debug.Assert(_screenHeight >= Settings.PlayerView.Height, "Too small screen size");
+
+            Debug.Assert(_buffer != null, "NULL");
+            Debug.Assert(_oldBuffer != null, "NULL");
+            Debug.Assert(charMap != null, "NULL");
+            Debug.Assert(tileGraphicsMap != null, "NULL");
+        }
+
+        private void InitCharMap()
+        {
             charMap = new Dictionary<string, GraphicsInfo>();
-            charMap["Player"] = new GraphicsInfo() 
+            charMap["Player"] = new GraphicsInfo()
             {
-                Char = '@', Color = ConsoleColor.White 
+                Char = '@',
+                Color = ConsoleColor.White
             };
             charMap["SomeGuy"] = new GraphicsInfo()
             {
                 Char = '@',
                 Color = ConsoleColor.DarkYellow
             };
+        }
 
+        private void InitTileGraphicsMap()
+        {
             tileGraphicsMap = new Dictionary<TileType, GraphicsInfo>();
             tileGraphicsMap[TileType.Wall] = new GraphicsInfo
             {
@@ -75,11 +96,6 @@ namespace DungeonPrisonConsoleRenderer
                 Char = ' ',
                 Color = ConsoleColor.White
             };
-
-            Console.CursorVisible = false;
-
-            Debug.Assert(_screenWidth >= Settings.PlayerView.Width, "Too small screen size");
-            Debug.Assert(_screenHeight >= Settings.PlayerView.Height, "Too small screen size");
         }
 
         public void Draw(Player player, List<Actor> actors, TileMap tileMap)
@@ -107,13 +123,13 @@ namespace DungeonPrisonConsoleRenderer
             int halfWidth = Settings.PlayerView.Width / 2;
             int halfHeight = Settings.PlayerView.Height / 2;
 
-            foreach (var item in actors)
+            foreach (var item in actors.Where(p => p.IsAlive))
             {
                 int relativeX = player.X - item.X;
                 int relativeY = player.Y - item.Y;
 
                 int screenPosX = -relativeX + halfWidth;
-                int screenPosY = relativeY + halfHeight;
+                int screenPosY = -relativeY + halfHeight;
 
                 if (!InView(screenPosX, screenPosY))
                     continue;
@@ -142,7 +158,7 @@ namespace DungeonPrisonConsoleRenderer
                     int relativeY = player.Y - j;
 
                     int screenPosX = -relativeX + halfWidth;
-                    int screenPosY = relativeY + halfHeight;
+                    int screenPosY = -relativeY + halfHeight;
 
                     if (!InView(screenPosX, screenPosY))
                         continue;
