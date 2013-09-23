@@ -1,0 +1,5 @@
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.dll
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.pdb
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.csprojResolveAssemblyReference.cache
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.dll
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.pdb

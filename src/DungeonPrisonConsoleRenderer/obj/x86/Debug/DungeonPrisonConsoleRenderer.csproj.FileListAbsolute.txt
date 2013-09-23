@@ -1,0 +1,7 @@
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\DungeonPrisonConsoleRenderer.exe
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\DungeonPrisonConsoleRenderer.pdb
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\DungeonPrisonLib.dll
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\DungeonPrisonLib.pdb
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\obj\x86\Debug\DungeonPrisonConsoleRenderer.csprojResolveAssemblyReference.cache
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\obj\x86\Debug\DungeonPrisonConsoleRenderer.exe
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\obj\x86\Debug\DungeonPrisonConsoleRenderer.pdb

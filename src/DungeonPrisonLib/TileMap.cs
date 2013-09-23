@@ -40,7 +40,9 @@ namespace DungeonPrisonLib
 
         public void ReadSimpleMap(string path)
         {
-            string[] lines = File.ReadAllLines(path);
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
 
             Map = new Tile[lines.Length, lines[0].Length];
 
@@ -61,6 +63,11 @@ namespace DungeonPrisonLib
                             break;
                     }
                 }
+            }
+            }
+            catch(IOException e)
+            {
+                return;
             }
         }
 
