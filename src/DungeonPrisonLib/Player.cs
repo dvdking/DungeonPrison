@@ -55,7 +55,7 @@ namespace DungeonPrisonLib
 
             if (actor != null)
             {
-                Attack(actor, new AttackInfo {Damage = 1, Message = "You hit someone!" });
+                Attack(actor, new AttackInfo {Damage = 1, Message = "You hit " + actor.GameName });
                 return;
             }
 

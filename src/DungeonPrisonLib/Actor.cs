@@ -10,6 +10,7 @@ namespace DungeonPrisonLib
         public bool IsAlive { get; private set; }
 
         public string Name;
+        public string GameName;
 
         public int X, Y;
 

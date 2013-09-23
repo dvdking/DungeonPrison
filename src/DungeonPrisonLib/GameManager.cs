@@ -52,8 +52,42 @@ namespace DungeonPrisonLib
 
             var act = new Creature();
             act.Name = "SomeGuy";
+            act.GameName = "Some guy 1";
             act.X = 3;
             act.Y = 2;
+            _actors.Add(act);
+
+            act = new Creature();
+            act.Name = "SomeGuy";
+            act.GameName = "Some guy 2";
+            act.X = 4;
+            act.Y = 2;
+            _actors.Add(act);
+            act = new Creature();
+            act.Name = "SomeGuy";
+            act.GameName = "Some guy 3";
+            act.X = 5;
+            act.Y = 2;
+            _actors.Add(act);
+            act = new Creature();
+            act.Name = "SomeGuy";
+            act.GameName = "Some guy 4";
+            act.X = 3;
+            act.Y = 3;
+            _actors.Add(act);
+
+            act = new Creature();
+            act.Name = "SomeGuy";
+            act.GameName = "Some guy 5";
+            act.X = 5;
+            act.Y = 4;
+            _actors.Add(act);
+
+            act = new Creature();
+            act.Name = "SomeGuy";
+            act.GameName = "Some guy 6";
+            act.X = 2;
+            act.Y = 1;
             _actors.Add(act);
 
             _tileMap = new TileMap(30, 30);

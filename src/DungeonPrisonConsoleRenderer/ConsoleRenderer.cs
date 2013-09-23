@@ -38,7 +38,13 @@ namespace DungeonPrisonConsoleRenderer
         private int _screenWidth, _screenHeight;
         private int _viewPositionX, _viewPositionY;
 
+        public int LogPositionX;
+        public int LogPositionY;
 
+        public int LogWidth;
+        public int LogHeight;
+
+        
         public ConsoleRenderer(int screenWidth, int screenHeight)
         {
             _screenWidth = screenWidth;
@@ -105,7 +111,7 @@ namespace DungeonPrisonConsoleRenderer
             DrawTileMap(player, tileMap);
             DrawActors(player, actors);
             DrawPlayer(player);
-            
+            DrawLog();
 
             DrawBuffer();
         }
@@ -167,6 +173,30 @@ namespace DungeonPrisonConsoleRenderer
 
                     DrawGraphicsInfoToBuffer(screenPosX, screenPosY, tileGraphicsMap[tileMap.GetTile(i, j).Type]);
                 }
+            }
+        }
+
+        private void DrawLog()
+        {
+            var messages = GameManager.Instance.Log.GetMessages(Math.Max(0, GameManager.Instance.Log.MessagesCount - LogHeight), LogHeight);
+            if (messages == null)
+                return;
+            for (int i = 0; i < messages.Length; i++)
+            {
+                DrawString(LogPositionX, LogPositionY + i, messages[i]);
+            }
+        }
+
+        private void DrawString(int x, int y, string str)
+        {
+            if (y >= _screenHeight)
+                return;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (x + i >= _screenWidth)
+                    break;
+                _buffer[x + i, y] = new GraphicsInfo() { Char = str[i], Color = ConsoleColor.White };
             }
         }
 

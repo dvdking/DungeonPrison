@@ -20,9 +20,11 @@ namespace DungeonPrisonLib
         {
             if (position >= MessagesCount)
                 return null;
+            if (position < 0)
+                return null;
             
             int countLeft = MessagesCount - position;
-            int messagesToReturn = countLeft - messagesCount;
+            int messagesToReturn = Math.Min(countLeft,messagesCount);
 
             if (messagesToReturn <= 0)
                 return null;
