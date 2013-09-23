@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="AttackInfo.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="IInput.cs" />

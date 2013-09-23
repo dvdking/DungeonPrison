@@ -22,6 +22,7 @@ namespace DungeonPrisonLib
 
         internal void Attack(Actor actor, AttackInfo attackInfo)
         {
+            GameManager.Instance.Log.AddMessage(attackInfo.Message);
             actor.Destroy();
         }
 

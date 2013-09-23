@@ -22,6 +22,7 @@ namespace DungeonPrisonLib
 
         IRenderer _renderer;
         IInput _input;
+        public Log Log{get; private set;}
 
         TileMap _tileMap;
 
@@ -36,6 +37,8 @@ namespace DungeonPrisonLib
         {
             _renderer = renderer;
             _input = input;
+
+            Log = new Log();
 
             _actors = new List<Actor>(128);
             _actorsToAdd = new Queue<Actor>(16);

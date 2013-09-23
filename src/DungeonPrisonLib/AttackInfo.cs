@@ -8,5 +8,6 @@ namespace DungeonPrisonLib
     struct AttackInfo
     {
         public int Damage;
+        public string Message;
     }
 }

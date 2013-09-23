@@ -29,10 +29,7 @@ namespace DungeonPrisonLib
                 switch (key)
                 {
                     case InputKey.MoveLeft:
-                        Move(-1, 0, tileMap);
-
-                        
-
+                        Move(-1, 0, tileMap);                  
                         break;
                     case InputKey.MoveRight:
                         Move(1, 0, tileMap);
@@ -58,7 +55,7 @@ namespace DungeonPrisonLib
 
             if (actor != null)
             {
-                Attack(actor, new AttackInfo {Damage = 1 });
+                Attack(actor, new AttackInfo {Damage = 1, Message = "You hit someone!" });
                 return;
             }
 
