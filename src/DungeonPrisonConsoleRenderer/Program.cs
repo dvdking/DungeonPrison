@@ -17,8 +17,16 @@ namespace DungeonPrisonConsoleRenderer
             renderer.HealthBarPositionX = 32;
             renderer.HealthBarPositionY = 1;
 
-            GameManager.CreateInstance(renderer, new ConsoleInput());
-            GameManager.Instance.Run();
+            if (renderer.ReadGraphicsInfoData("Content//GraphicsInfo.xml"))
+            {
+                GameManager.CreateInstance(renderer, new ConsoleInput());
+                GameManager.Instance.Run();
+            }
+            else
+            {
+                Console.WriteLine("Fatal error");
+                Console.ReadKey();
+            }
         }
     }
 }

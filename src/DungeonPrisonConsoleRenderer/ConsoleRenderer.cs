@@ -5,6 +5,8 @@ using System.Text;
 using DungeonPrisonLib;
 using System.Diagnostics;
 using DungeonPrisonLib.Actors;
+using System.IO;
+using System.Xml;
 
 namespace DungeonPrisonConsoleRenderer
 {
@@ -55,10 +57,6 @@ namespace DungeonPrisonConsoleRenderer
             _buffer = new GraphicsInfo[_screenWidth, _screenHeight];
             _oldBuffer = new GraphicsInfo[_screenWidth, _screenHeight];
 
-            InitCharMap();
-            InitTileGraphicsMap();
-
-
             Console.CursorVisible = false;
 
             Debug.Assert(_screenWidth >= Settings.PlayerView.Width, "Too small screen size");
@@ -66,46 +64,87 @@ namespace DungeonPrisonConsoleRenderer
 
             Debug.Assert(_buffer != null, "NULL");
             Debug.Assert(_oldBuffer != null, "NULL");
-            Debug.Assert(charMap != null, "NULL");
-            Debug.Assert(tileGraphicsMap != null, "NULL");
         }
 
-
-
-        private void InitCharMap()
+        public bool ReadGraphicsInfoData(string path)
         {
+            var file = new XmlDocument();
+            try
+            {
+                file.Load(path);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("could not open file: " + path);
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+
+
             charMap = new Dictionary<string, GraphicsInfo>();
-            charMap["you"] = new GraphicsInfo()
+            tileGraphicsMap = new Dictionary<TileType, GraphicsInfo>();
+
+            XmlNode root = file.SelectSingleNode("GraphicsInfo");
+
+            XmlNode main = root.SelectSingleNode("Actors");
+            XmlNodeList actors = main.SelectNodes("Actor");
+            foreach (XmlNode node in actors)
             {
-                Char = '@',
-                Color = ConsoleColor.White
-            };
-            charMap["BrainlessSlime"] = new GraphicsInfo()
+                string name = node.Attributes["name"].Value;
+                string strColor = node.Attributes["color"].Value;
+                char ch = node.Attributes["ch"].Value.ToCharArray()[0];
+
+                charMap[name] = new GraphicsInfo 
+                {
+                    Char = ch,
+                    Color = GetColorFromString(strColor) 
+                };
+            }
+
+            main = root.SelectSingleNode("Tiles");
+            XmlNodeList tiles = main.SelectNodes("Tile");
+
+            foreach (XmlNode node in tiles)
             {
-                Char = 'o',
-                Color = ConsoleColor.DarkGreen
-            };
+                string name = node.Attributes["name"].Value;
+                string strColor = node.Attributes["color"].Value;
+                char ch = node.Attributes["ch"].Value.ToCharArray()[0];
+
+
+                tileGraphicsMap[GetTileFromString(name)] = new GraphicsInfo
+                {
+                    Char = ch,
+                    Color = GetColorFromString(strColor)
+                };
+            }
+
+            return true;
         }
 
-        private void InitTileGraphicsMap()
+        private ConsoleColor GetColorFromString(string str)
         {
-            tileGraphicsMap = new Dictionary<TileType, GraphicsInfo>();
-            tileGraphicsMap[TileType.Wall] = new GraphicsInfo
+            switch (str.ToLower())
             {
-                Char = '#',
-                Color = ConsoleColor.White
-            };
-            tileGraphicsMap[TileType.Ground] = new GraphicsInfo
-            {
-                Char = '.',
-                Color = ConsoleColor.Gray
-            };
+                case "white":
+                    return ConsoleColor.White;
+                case "darkgreen":
+                    return ConsoleColor.DarkGreen;
+                default:
+                    return ConsoleColor.Red;//it's set to red so it will be more noticable if there are errors
+            }
+        }
 
-            tileGraphicsMap[TileType.Nothing] = new GraphicsInfo
+        private TileType GetTileFromString(string str)
+        {
+            switch (str.ToLower())
             {
-                Char = ' ',
-                Color = ConsoleColor.White
-            };
+                case "wall":
+                    return TileType.Wall;
+                case "floor":
+                    return TileType.Floor;
+                default:
+                    return TileType.Nothing;
+            }
         }
 
         public void Draw(Player player, List<Actor> actors, TileMap tileMap)

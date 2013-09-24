@@ -14,6 +14,6 @@ namespace DungeonPrisonLib
     {
         Nothing,
         Wall,
-        Ground
+        Floor
     }
 }

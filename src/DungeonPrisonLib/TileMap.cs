@@ -69,7 +69,7 @@ namespace DungeonPrisonLib
                                 Map[i, j] = new Tile { Type = TileType.Wall };
                                 break;
                             default:
-                                Map[i, j] = new Tile { Type = TileType.Ground };
+                                Map[i, j] = new Tile { Type = TileType.Floor };
                                 break;
                         }
                     }

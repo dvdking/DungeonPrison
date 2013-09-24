@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GraphicsInfo>
+  <Actors>
+    <Actor ch ="@" name ="you" color="White"/>
+    <Actor ch ="o" name ="BrainlessSlime" color="DarkGreen"/>  
+  </Actors>
+  <Tiles>
+    <Tile ch ="#" name ="wall" color="white"/>
+    <Tile ch ="." name ="floor" color="white"/>
+  </Tiles>
+</GraphicsInfo>
