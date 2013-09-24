@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonPrisonLib.Actors.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,9 +37,32 @@ namespace DungeonPrisonLib.Actors.Behaviours
                     case InputKey.Wait:
                         Creature.Wait();
                         break;
+                    case InputKey.PickUp:
+                        Creature.PickUpItem();
+                        break;
+                    case InputKey.WieldWeapon:
+                        ChooseWeaponToWield();
+                        break;
                     default:
                         break;
                 }
+            }
+        }
+
+        private void ChooseWeaponToWield()
+        {
+ 
+        }
+
+        private void WieldWeapon(Item item)
+        {
+            if (item != null)
+            {
+                GameManager.Instance.Log.AddMessage("Nothing to wield");
+            }
+            else
+            {
+                Creature.WieldItem(item);
             }
         }
     }

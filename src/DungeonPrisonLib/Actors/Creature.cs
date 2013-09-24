@@ -15,6 +15,8 @@ namespace DungeonPrisonLib.Actors
 
         public Inventory Inventory{get; private set;}
 
+        public Item WieldedItem;
+
 
         public float UsedTime{get;private set;}
 
@@ -64,7 +66,8 @@ namespace DungeonPrisonLib.Actors
                 var creature = actor as Creature;
                 if(creature != null)
                 {
-                    Attack(creature, new AttackInfo { Damage = 1, Message = GameName + (GameName == "you" ? " hit " : " hits ") + actor.GameName });
+                    int bonusDamage = WieldedItem == null? ((WieldedItem is MeleeWeapon) ? (WieldedItem as MeleeWeapon).Damage : 0) : 0;
+                    Attack(creature, new AttackInfo { Damage = 1 + bonusDamage, Message = GameName + (GameName == "you" ? " hit " : " hits ") + actor.GameName });
                     return;
                 }
             }
@@ -92,6 +95,27 @@ namespace DungeonPrisonLib.Actors
                     Inventory.AddItem(actor as Item);
                 }
 	        }
+
+            UsedTime += 1.0f;
+        }
+        public void WieldItem(Item item)
+        {
+            if (WieldedItem == item)
+            {
+                GameManager.Instance.Log.AddMessage("Already wielding that");
+                return;
+            }
+
+            if (WieldedItem == null)
+            {
+                UsedTime += 1.0f;
+            }
+            else
+            {
+                UsedTime += 2.0f;
+            }
+
+            WieldedItem = item;
         }
     }
 }

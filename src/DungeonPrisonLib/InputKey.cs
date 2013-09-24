@@ -11,6 +11,8 @@ namespace DungeonPrisonLib
         MoveRight,
         MoveUp,
         MoveDown,
-        Wait
+        Wait,
+        PickUp,
+        WieldWeapon
     }
 }

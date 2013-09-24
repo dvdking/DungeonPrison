@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ConsoleInput.cs" />
     <Compile Include="ConsoleRenderer.cs" />
+    <Compile Include="ConsoleUI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

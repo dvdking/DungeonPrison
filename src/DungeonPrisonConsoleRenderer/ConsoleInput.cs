@@ -32,6 +32,9 @@ namespace DungeonPrisonConsoleRenderer
                 case ConsoleKey.S:
                     PressedKeys.Add(InputKey.Wait);
                     break;
+                case ConsoleKey.G:
+                    PressedKeys.Add(InputKey.PickUp);
+                    break;
             }
         }
 

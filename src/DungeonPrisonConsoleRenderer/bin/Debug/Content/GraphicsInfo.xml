@@ -2,7 +2,8 @@
 <GraphicsInfo>
   <Actors>
     <Actor ch ="@" name ="you" color="White"/>
-    <Actor ch ="o" name ="BrainlessSlime" color="DarkGreen"/>  
+    <Actor ch ="o" name ="BrainlessSlime" color="DarkGreen"/>
+    <Actor ch ="/" name ="Sword" color="White"/>
   </Actors>
   <Tiles>
     <Tile ch ="#" name ="wall" color="white"/>

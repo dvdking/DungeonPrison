@@ -10,6 +10,7 @@ namespace DungeonPrisonConsoleRenderer
         static void Main(string[] args)
         {
             var renderer = new ConsoleRenderer(64,25);
+
             renderer.LogPositionX = 1;
             renderer.LogPositionY = 17;
             renderer.LogWidth = 30;
