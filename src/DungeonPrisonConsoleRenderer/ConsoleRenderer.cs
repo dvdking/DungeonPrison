@@ -37,7 +37,6 @@ namespace DungeonPrisonConsoleRenderer
 
 
         private int _screenWidth, _screenHeight;
-        private int _viewPositionX, _viewPositionY;
 
         public int LogPositionX;
         public int LogPositionY;
@@ -70,6 +69,8 @@ namespace DungeonPrisonConsoleRenderer
             Debug.Assert(charMap != null, "NULL");
             Debug.Assert(tileGraphicsMap != null, "NULL");
         }
+
+
 
         private void InitCharMap()
         {

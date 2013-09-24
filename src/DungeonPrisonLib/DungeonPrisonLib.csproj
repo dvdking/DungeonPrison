@@ -46,6 +46,8 @@
     <Compile Include="Actors\Behaviours\Behaviour.cs" />
     <Compile Include="Actors\Behaviours\PlayerBehaviour.cs" />
     <Compile Include="Actors\Behaviours\SomeGuyBehaviour.cs" />
+    <Compile Include="Actors\Inventory.cs" />
+    <Compile Include="Actors\Items\Item.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Actors\Creature.cs" />
     <Compile Include="GameManager.cs" />

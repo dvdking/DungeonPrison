@@ -103,6 +103,19 @@ namespace DungeonPrisonLib
             return null;
         }
 
+        public List<Actor> GetActorsAtPosition(int x, int y)
+        {
+            List<Actor> actors = new List<Actor>();
+            foreach (var actor in actors)
+            {
+                if (actor.X == x && actor.Y == y)
+                {
+                    actors.Add(actor);
+                }
+            }
+            return actors;
+        }
+
         public void DestroyObject(Actor actor)
         {
             _actorsToRemove.Enqueue(actor);

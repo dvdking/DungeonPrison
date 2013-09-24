@@ -1,4 +1,5 @@
 ﻿using DungeonPrisonLib.Actors.Behaviours;
+using DungeonPrisonLib.Actors.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,16 @@ namespace DungeonPrisonLib.Actors
         public int MaxHealth;
         public int Health;
 
+        public Inventory Inventory{get; private set;}
+
+
         public float UsedTime{get;private set;}
 
         Behaviour _behaviour;
 
         public Creature()
         {
+            Inventory = new Inventory();
         }
 
         public void SetBehaviour(Behaviour behaviour)
@@ -73,6 +78,20 @@ namespace DungeonPrisonLib.Actors
         public void Wait()
         {
             UsedTime += 1.0f;
+        }
+
+        public void PickUpItem()
+        {
+            var actors = GameManager.Instance.GetActorsAtPosition(X, Y);
+
+            foreach (var actor in actors)
+	        {
+                if(actor is Item)
+                {
+                    GameManager.Instance.DestroyObject(actor);
+                    Inventory.AddItem(actor as Item);
+                }
+	        }
         }
     }
 }
