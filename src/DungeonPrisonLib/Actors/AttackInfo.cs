@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-namespace DungeonPrisonLib
+namespace DungeonPrisonLib.Actors
 {
     struct AttackInfo
     {

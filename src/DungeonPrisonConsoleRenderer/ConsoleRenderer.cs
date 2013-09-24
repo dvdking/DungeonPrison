@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DungeonPrisonLib;
 using System.Diagnostics;
+using DungeonPrisonLib.Actors;
 
 namespace DungeonPrisonConsoleRenderer
 {

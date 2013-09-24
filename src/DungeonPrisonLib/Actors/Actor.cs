@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DungeonPrisonLib
+namespace DungeonPrisonLib.Actors
 {
     public abstract class Actor
     {
@@ -31,6 +31,23 @@ namespace DungeonPrisonLib
         {
             GameManager.Instance.DestroyObject(this);
             IsAlive = false;
+        }
+
+        public void Move(int x, int y, TileMap tileMap)
+        {
+            if (tileMap.IsSolid(X + x, Y + y))
+                return;
+
+            var actor = GameManager.Instance.GetActorAtPosition(X + x, Y + y);
+
+            if (actor != null)
+            {
+                Attack(actor, new AttackInfo { Damage = 1, Message = "You hit " + actor.GameName });
+                return;
+            }
+
+            X += x;
+            Y += y;
         }
     }
 }
