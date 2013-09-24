@@ -72,7 +72,7 @@ namespace DungeonPrisonConsoleRenderer
         private void InitCharMap()
         {
             charMap = new Dictionary<string, GraphicsInfo>();
-            charMap["Player"] = new GraphicsInfo()
+            charMap["you"] = new GraphicsInfo()
             {
                 Char = '@',
                 Color = ConsoleColor.White
@@ -111,18 +111,9 @@ namespace DungeonPrisonConsoleRenderer
 
             DrawTileMap(player, tileMap);
             DrawActors(player, actors);
-            DrawPlayer(player);
             DrawLog();
 
             DrawBuffer();
-        }
-
-        private void DrawPlayer(Player player)
-        {
-            int halfWidth = Settings.PlayerView.Width / 2;
-            int halfHeight = Settings.PlayerView.Height / 2;
-
-            DrawGraphicsInfoToBuffer(_viewPositionX + halfWidth, _viewPositionY + halfHeight, charMap[player.Name]);
         }
 
         private void DrawActors(Player player, List<Actor> actors)
@@ -140,6 +131,8 @@ namespace DungeonPrisonConsoleRenderer
 
                 if (!InView(screenPosX, screenPosY))
                     continue;
+                if (!GameManager.Instance.LOS.IsVisible(screenPosX, screenPosY))
+                    continue;
 
 
                 DrawGraphicsInfoToBuffer(screenPosX, screenPosY, charMap[item.Name]);
@@ -151,8 +144,8 @@ namespace DungeonPrisonConsoleRenderer
             int startX = player.X - Settings.PlayerView.Width / 2;
             int startY = player.Y - Settings.PlayerView.Height / 2;
 
-            int endX = startX + tileMap.Width;
-            int endY = startY + tileMap.Height;
+            int endX = startX + tileMap.Width + Settings.PlayerView.Width / 2;
+            int endY = startY + tileMap.Height + Settings.PlayerView.Width / 2;
 
             int halfWidth = Settings.PlayerView.Width / 2;
             int halfHeight = Settings.PlayerView.Height / 2;
@@ -170,6 +163,8 @@ namespace DungeonPrisonConsoleRenderer
                     if (!InView(screenPosX, screenPosY))
                         continue;
                     if (!tileMap.InBounds(i, j))
+                        continue;
+                    if (!GameManager.Instance.LOS.IsVisible(screenPosX, screenPosY))
                         continue;
 
                     DrawGraphicsInfoToBuffer(screenPosX, screenPosY, tileGraphicsMap[tileMap.GetTile(i, j).Type]);
@@ -241,11 +236,11 @@ namespace DungeonPrisonConsoleRenderer
 
         private bool InView(int x, int y)
         {
-            if (x > Settings.PlayerView.Width)
+            if (x >= Settings.PlayerView.Width)
                 return false;
             if (x < 0)
                 return false;
-            if (y > Settings.PlayerView.Height)
+            if (y >= Settings.PlayerView.Height)
                 return false;
             if (y < 0)
                 return false;

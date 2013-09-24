@@ -7,11 +7,11 @@ namespace DungeonPrisonLib.Actors.Behaviours
 {
     public abstract class Behaviour
     {
-        protected Actor Actor;
+        protected Creature Creature;
 
-        public Behaviour(Actor actor = null)
+        public Behaviour(Creature actor = null)
         {
-            Actor = actor;
+            Creature = actor;
         }
 
         public abstract void Update(float delta, TileMap tileMap);

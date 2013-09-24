@@ -7,7 +7,7 @@ namespace DungeonPrisonLib.Actors.Behaviours
 {
     class PlayerBehaviour:Behaviour
     {
-        public PlayerBehaviour(Actor actor)
+        public PlayerBehaviour(Creature actor)
             : base(actor)
         {
  
@@ -22,16 +22,16 @@ namespace DungeonPrisonLib.Actors.Behaviours
                 switch (key)
                 {
                     case InputKey.MoveLeft:
-                        Actor.Move(-1, 0, tileMap);
+                        Creature.Move(-1, 0, tileMap);
                         break;
                     case InputKey.MoveRight:
-                        Actor.Move(1, 0, tileMap);
+                        Creature.Move(1, 0, tileMap);
                         break;
                     case InputKey.MoveUp:
-                        Actor.Move(0, -1, tileMap);
+                        Creature.Move(0, -1, tileMap);
                         break;
                     case InputKey.MoveDown:
-                        Actor.Move(0, 1, tileMap);
+                        Creature.Move(0, 1, tileMap);
                         break;
                     default:
                         break;

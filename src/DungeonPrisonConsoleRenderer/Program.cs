@@ -9,9 +9,9 @@ namespace DungeonPrisonConsoleRenderer
     {
         static void Main(string[] args)
         {
-            var renderer = new ConsoleRenderer(24,15);
+            var renderer = new ConsoleRenderer(34,25);
             renderer.LogPositionX = 1;
-            renderer.LogPositionY = 11;
+            renderer.LogPositionY = 17;
             renderer.LogWidth = 30;
             renderer.LogHeight = 4;
 

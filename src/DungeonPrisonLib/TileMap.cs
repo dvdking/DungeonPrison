@@ -35,6 +35,9 @@ namespace DungeonPrisonLib
 
         public bool IsSolid(int x, int y)
         {
+            if (!InBounds(x, y))
+                return false;
+
             var tile = GetTile(x, y).Type;
 
             return tile == TileType.Wall;

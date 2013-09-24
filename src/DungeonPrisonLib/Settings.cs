@@ -14,7 +14,7 @@ namespace DungeonPrisonLib
         {
             //SET ALL SETTINGS HERE FOR NOW
             //TODO: LOAD FROM FILE
-            PlayerView = new Size(8, 6);
+            PlayerView = new Size(32, 16);
         }
     }
 }

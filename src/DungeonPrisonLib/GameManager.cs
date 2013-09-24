@@ -25,6 +25,7 @@ namespace DungeonPrisonLib
         IRenderer _renderer;
         public IInput Input{get; private set;}
         public Log Log{get; private set;}
+        public LOS LOS { get; private set; }
 
         TileMap _tileMap;
 
@@ -41,6 +42,7 @@ namespace DungeonPrisonLib
             Input = input;
 
             Log = new Log();
+            LOS = new LOS();
 
             _actors = new List<Actor>(128);
             _actorsToAdd = new Queue<Actor>(16);
@@ -48,7 +50,8 @@ namespace DungeonPrisonLib
 
             _player = new Player();
             _player.SetBehaviour(new PlayerBehaviour(_player));
-            _player.Name = "Player";
+            _player.Name = "you";
+            _player.GameName = "you";
             _player.X = 4;
             _player.Y = 2;
             _actors.Add(_player);
@@ -58,45 +61,7 @@ namespace DungeonPrisonLib
             act.Name = "SomeGuy";
             act.GameName = "Some guy 1";
             act.X = 3;
-            act.Y = 2;
-            _actors.Add(act);
-
-            act = new Creature();
-            act.Name = "SomeGuy";
-            act.GameName = "Some guy 2";
-            act.X = 4;
-            act.Y = 2;
-            act.SetBehaviour(new SomeGuyBehaviour(act));
-            _actors.Add(act);
-            act = new Creature();
-            act.Name = "SomeGuy";
-            act.GameName = "Some guy 3";
-            act.X = 5;
-            act.Y = 2;
-            act.SetBehaviour(new SomeGuyBehaviour(act));
-            _actors.Add(act);
-            act = new Creature();
-            act.Name = "SomeGuy";
-            act.GameName = "Some guy 4";
-            act.X = 3;
-            act.Y = 3;
-            act.SetBehaviour(new SomeGuyBehaviour(act));
-            _actors.Add(act);
-
-            act = new Creature();
-            act.Name = "SomeGuy";
-            act.GameName = "Some guy 5";
-            act.X = 5;
-            act.Y = 4;
-            act.SetBehaviour(new SomeGuyBehaviour(act));
-            _actors.Add(act);
-
-            act = new Creature();
-            act.Name = "SomeGuy";
-            act.GameName = "Some guy 6";
-            act.X = 2;
-            act.Y = 1;
-            act.SetBehaviour(new SomeGuyBehaviour(act));
+            act.Y = 6;
             _actors.Add(act);
 
             _tileMap = new TileMap(30, 30);
@@ -144,6 +109,8 @@ namespace DungeonPrisonLib
                 if(actor.IsAlive)
                     actor.Update(0.0f, _tileMap);
             }
+
+            LOS.UpdateVisibleArea(_player, _tileMap);
         }
         private void Draw()
         {

@@ -7,7 +7,7 @@ namespace DungeonPrisonLib.Actors.Behaviours
 {
     class SomeGuyBehaviour:Behaviour
     {
-        public SomeGuyBehaviour(Actor actor)
+        public SomeGuyBehaviour(Creature actor)
             : base(actor)
         {
  
@@ -17,7 +17,7 @@ namespace DungeonPrisonLib.Actors.Behaviours
         {
             int dirX = RandomTool.NextBool() ? RandomTool.NextSign() : 0;
             int dirY = dirX == 0?  RandomTool.NextSign(): 0;
-            Actor.Move(dirX, dirY, tileMap);
+            Creature.Move(dirX, dirY, tileMap);
         }
     }
 }
