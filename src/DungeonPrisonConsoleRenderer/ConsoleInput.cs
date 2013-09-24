@@ -29,6 +29,9 @@ namespace DungeonPrisonConsoleRenderer
                 case ConsoleKey.DownArrow:
                     PressedKeys.Add(InputKey.MoveDown);
                     break;
+                case ConsoleKey.S:
+                    PressedKeys.Add(InputKey.Wait);
+                    break;
             }
         }
 

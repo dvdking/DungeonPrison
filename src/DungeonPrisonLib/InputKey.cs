@@ -10,6 +10,7 @@ namespace DungeonPrisonLib
         MoveLeft,
         MoveRight,
         MoveUp,
-        MoveDown
+        MoveDown,
+        Wait
     }
 }

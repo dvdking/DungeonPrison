@@ -60,8 +60,8 @@ namespace DungeonPrisonLib
 
             var act = new Creature();
             act.SetBehaviour(new SomeGuyBehaviour(act));
-            act.Name = "SomeGuy";
-            act.GameName = "Some guy 1";
+            act.Name = "BrainlessSlime";
+            act.GameName = "brainless slime";
             act.X = 3;
             act.Y = 6;
             act.MaxHealth = 5;
@@ -73,12 +73,21 @@ namespace DungeonPrisonLib
         }
 
         public void Run()
-        {            
+        {
+            UpdateWorld(0.0f);
+            Draw();
+            float delta = 0.0f;
             while (!_exit)
             {
-                Update();
+                if (delta > 0.001f)
+                {
+                    UpdateWorld(delta);
+                }
                 Draw();
-                Input.Update();  
+
+                Input.Update();
+                _player.Update(0.0f, _tileMap);
+                delta = _player.UsedTime;
             }
         }
 
@@ -99,7 +108,7 @@ namespace DungeonPrisonLib
             _actorsToRemove.Enqueue(actor);
         }
 
-        private void Update()
+        private void UpdateWorld(float delta)
         {
             foreach (var actor in _actorsToRemove)
             {
@@ -109,8 +118,8 @@ namespace DungeonPrisonLib
 
             foreach (var actor in _actors)
             {
-                if(actor.IsAlive)
-                    actor.Update(0.0f, _tileMap);
+                if(actor.IsAlive && actor != _player)
+                    actor.Update(delta, _tileMap);
             }
 
             LOS.UpdateVisibleArea(_player, _tileMap);

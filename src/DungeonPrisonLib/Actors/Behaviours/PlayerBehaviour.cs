@@ -33,6 +33,9 @@ namespace DungeonPrisonLib.Actors.Behaviours
                     case InputKey.MoveDown:
                         Creature.Move(0, 1, tileMap);
                         break;
+                    case InputKey.Wait:
+                        Creature.Wait();
+                        break;
                     default:
                         break;
                 }

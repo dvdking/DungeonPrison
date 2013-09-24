@@ -79,10 +79,10 @@ namespace DungeonPrisonConsoleRenderer
                 Char = '@',
                 Color = ConsoleColor.White
             };
-            charMap["SomeGuy"] = new GraphicsInfo()
+            charMap["BrainlessSlime"] = new GraphicsInfo()
             {
-                Char = '@',
-                Color = ConsoleColor.DarkYellow
+                Char = 'o',
+                Color = ConsoleColor.DarkGreen
             };
         }
 

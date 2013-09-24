@@ -12,7 +12,7 @@ namespace DungeonPrisonLib.Actors
         public int MaxHealth;
         public int Health;
 
-        protected float UsedTime;
+        public float UsedTime{get;private set;}
 
         Behaviour _behaviour;
 
@@ -37,7 +37,6 @@ namespace DungeonPrisonLib.Actors
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
             creature.Health -= attackInfo.Damage;
             creature.CheckDeath();
-
             UsedTime += 1.0f;
         }
 
@@ -68,6 +67,11 @@ namespace DungeonPrisonLib.Actors
             X += x;
             Y += y;
 
+            UsedTime += 1.0f;
+        }
+
+        public void Wait()
+        {
             UsedTime += 1.0f;
         }
     }

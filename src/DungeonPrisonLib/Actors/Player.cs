@@ -8,8 +8,6 @@ namespace DungeonPrisonLib.Actors
 {
     public class Player:Creature
     {
-        public float UsedTime { get; private set; }
-
         public Player()
             :base()
         {
@@ -18,7 +16,6 @@ namespace DungeonPrisonLib.Actors
         public override void Update(float delta, TileMap tileMap)
         {
             base.Update(delta, tileMap);
-
         }
 
 
