@@ -45,6 +45,8 @@ namespace DungeonPrisonConsoleRenderer
         public int LogWidth;
         public int LogHeight;
 
+        public int HealthBarPositionX;
+        public int HealthBarPositionY;
         
         public ConsoleRenderer(int screenWidth, int screenHeight)
         {
@@ -112,6 +114,8 @@ namespace DungeonPrisonConsoleRenderer
             DrawTileMap(player, tileMap);
             DrawActors(player, actors);
             DrawLog();
+            DrawHealthBar(HealthBarPositionX, HealthBarPositionY, player);
+
 
             DrawBuffer();
         }
@@ -183,6 +187,11 @@ namespace DungeonPrisonConsoleRenderer
             }
         }
 
+        private void DrawHealthBar(int x, int y, Player player)
+        {
+            DrawString(x,y, player.Health +"/" + player.MaxHealth);
+        }
+
         private void DrawString(int x, int y, string str)
         {
             if (y >= _screenHeight)
@@ -204,7 +213,7 @@ namespace DungeonPrisonConsoleRenderer
         private void DrawGraphicsInfo(int x, int y, GraphicsInfo graphicsInfo)
         {
             Console.SetCursorPosition(x, y);
-            Console.ForegroundColor = graphicsInfo.Color;
+            Console.ForegroundColor =  graphicsInfo.Color;
             Console.Write(graphicsInfo.Char);
         }
 

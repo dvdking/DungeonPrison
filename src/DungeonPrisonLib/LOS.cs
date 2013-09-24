@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DungeonPrisonLib
 {
@@ -26,17 +27,42 @@ namespace DungeonPrisonLib
             {
                 for (int j = 0; j < Settings.PlayerView.Height; j++)
                 {
-                    visibleArea[i, j] = InteserectsWall(player, tileMap, player.X + i - Settings.PlayerView.Width / 2, player.Y + j - Settings.PlayerView.Height / 2);
+                    visibleArea[i, j] = false;
                 }
             }
+
+            for (int i = 0; i < Settings.PlayerView.Width; i++)
+            {
+                Parallel.For(0, Settings.PlayerView.Height, (j) =>
+               // {
+               // for (int j = 0; j < Settings.PlayerView.Height; j++)
+                {
+                    if (visibleArea[i, j] == false)
+                    {
+                        visibleArea[i, j] = InteserectsWall(player, tileMap, player.X + i - Settings.PlayerView.Width / 2, player.Y + j - Settings.PlayerView.Height / 2);
+                        if (visibleArea[i, j] == true)
+                        {
+                            //SetVisibleNearNodes(player, tileMap, i, j);
+                        }
+                    }
+               // }
+                });
+            }
+
         }
 
         public bool InteserectsWall(Actor player, TileMap tileMap, int x, int y)
         {
+            const int amount = 1;
+
             if (!tileMap.InBounds(x, y))
             {
                 return true;
             }
+
+            x *= amount;
+            y *= amount;
+
 
             int t, px, py, ax, ay, sx, sy, dx, dy;
             px = 0;
@@ -61,8 +87,8 @@ namespace DungeonPrisonLib
            sy = Math.Sign(dy);
  
            /* x & y: these are the monster's x & y coords */
-           px = player.X;
-           py = player.Y;
+           px = player.X * amount;
+           py = player.Y * amount;
  
            /* The following if statement checks to see if the line *
             * is x dominate or y dominate and loops accordingly    */
@@ -97,7 +123,7 @@ namespace DungeonPrisonLib
               /* keep looping until the monster's sight is blocked *
                * by an object at the updated x,y coord             */
               }
-              while(tileMap.IsSolid(px,py) == false);
+              while (tileMap.IsSolid(px / amount, py / amount) == false);
  
               /* NOTE: sight_blocked is a function that returns true      *
                * if an object at the x,y coord. would block the monster's *
@@ -125,7 +151,7 @@ namespace DungeonPrisonLib
                     return true;
                  }
               }
-              while (tileMap.IsSolid(px, py) == false);
+              while (tileMap.IsSolid(px / amount, py / amount) == false);
               return false;
            }
         }

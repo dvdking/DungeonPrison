@@ -9,11 +9,13 @@ namespace DungeonPrisonConsoleRenderer
     {
         static void Main(string[] args)
         {
-            var renderer = new ConsoleRenderer(34,25);
+            var renderer = new ConsoleRenderer(64,25);
             renderer.LogPositionX = 1;
             renderer.LogPositionY = 17;
             renderer.LogWidth = 30;
             renderer.LogHeight = 4;
+            renderer.HealthBarPositionX = 32;
+            renderer.HealthBarPositionY = 1;
 
             GameManager.CreateInstance(renderer, new ConsoleInput());
             GameManager.Instance.Run();

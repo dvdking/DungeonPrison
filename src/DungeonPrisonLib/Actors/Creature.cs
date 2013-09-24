@@ -9,7 +9,10 @@ namespace DungeonPrisonLib.Actors
 {
     public class Creature:Actor
     {
+        public int MaxHealth;
+        public int Health;
 
+        protected float UsedTime;
 
         Behaviour _behaviour;
 
@@ -24,14 +27,24 @@ namespace DungeonPrisonLib.Actors
 
         public override void Update(float delta, TileMap tileMap)
         {
+            UsedTime = 0f;
             if(_behaviour != null)
                 _behaviour.Update(delta, tileMap);
         }
 
-        internal void Attack(Actor actor, AttackInfo attackInfo)
+        internal void Attack(Creature creature, AttackInfo attackInfo)
         {
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
-            actor.Destroy();
+            creature.Health -= attackInfo.Damage;
+            creature.CheckDeath();
+
+            UsedTime += 1.0f;
+        }
+
+        public void CheckDeath()
+        {
+            if(Health <= 0)
+                Destroy();
         }
 
         public void Move(int x, int y, TileMap tileMap)
@@ -41,15 +54,21 @@ namespace DungeonPrisonLib.Actors
                 return;
 
             var actor = GameManager.Instance.GetActorAtPosition(X + x, Y + y);
-
+           
             if (actor != null)
             {
-                Attack(actor, new AttackInfo { Damage = 1, Message = GameName + (GameName == "you" ? " hit " : " hits ") + actor.GameName });
-                return;
+                var creature = actor as Creature;
+                if(creature != null)
+                {
+                    Attack(creature, new AttackInfo { Damage = 1, Message = GameName + (GameName == "you" ? " hit " : " hits ") + actor.GameName });
+                    return;
+                }
             }
 
             X += x;
             Y += y;
+
+            UsedTime += 1.0f;
         }
     }
 }

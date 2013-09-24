@@ -55,6 +55,8 @@ namespace DungeonPrisonLib
             _player.X = 4;
             _player.Y = 2;
             _actors.Add(_player);
+            _player.MaxHealth = 15;
+            _player.Health = 15;
 
             var act = new Creature();
             act.SetBehaviour(new SomeGuyBehaviour(act));
@@ -62,6 +64,8 @@ namespace DungeonPrisonLib
             act.GameName = "Some guy 1";
             act.X = 3;
             act.Y = 6;
+            act.MaxHealth = 5;
+            act.Health = 5;
             _actors.Add(act);
 
             _tileMap = new TileMap(30, 30);
@@ -69,13 +73,12 @@ namespace DungeonPrisonLib
         }
 
         public void Run()
-        {
-            
+        {            
             while (!_exit)
-            {                   
+            {
+                Update();
                 Draw();
-                Input.Update();
-                Update();                    
+                Input.Update();  
             }
         }
 
