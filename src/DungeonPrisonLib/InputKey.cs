@@ -13,6 +13,9 @@ namespace DungeonPrisonLib
         MoveDown,
         Wait,
         PickUp,
-        WieldWeapon
+        WieldWeapon,
+        Cancel,
+        Accept,
+        OpenInventory
     }
 }

@@ -50,6 +50,8 @@
     <Compile Include="GUI\GUIElement.cs" />
     <Compile Include="GUI\GUIManager.cs" />
     <Compile Include="GUI\HealthBar.cs" />
+    <Compile Include="GUI\InventoryElement.cs" />
+    <Compile Include="GUI\LogRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

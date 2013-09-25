@@ -9,7 +9,13 @@ namespace DungeonPrisonConsoleRenderer.GUI
     {
         List<GUIElement> _elements = new List<GUIElement>();
 
-        public bool IsInputInterupted { get; private set; }
+        public bool IsInputInterupted 
+        {
+            get 
+            {
+                return _elements.Any(p => p.InteruptInput); 
+            }
+        }
 
         public ConsoleRenderer Renderer { get; private set; }
 
@@ -24,9 +30,14 @@ namespace DungeonPrisonConsoleRenderer.GUI
             _elements.Add(guiElement);
         }
 
+        public void RemoveElement(GUIElement guiElement)
+        {
+            _elements.Remove(guiElement);
+        }
+
         public void Update()
         {
-            foreach (var item in _elements)
+            foreach (var item in _elements.ToList())
             {
                 item.Update();
             }
@@ -34,7 +45,7 @@ namespace DungeonPrisonConsoleRenderer.GUI
 
         public void Draw()
         {
-            foreach (var item in _elements)
+            foreach (var item in _elements.ToList())
             {
                 item.Draw();
             }

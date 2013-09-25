@@ -1,5 +1,6 @@
 ﻿using DungeonPrisonLib.Actors;
 using DungeonPrisonLib.Actors.Behaviours;
+using DungeonPrisonLib.Actors.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,14 @@ namespace DungeonPrisonLib
             act.Health = 5;
             _actors.Add(act);
 
+            var weapon = new MeleeWeapon();
+            weapon.Name = "Sword";
+            weapon.GameName = "short sword";
+            weapon.X = 4;
+            weapon.Y = 5;
+            weapon.Damage = 5;
+            _actors.Add(weapon);
+
             TileMap = new TileMap(30, 30);
             TileMap.ReadSimpleMap("map1.txt");
         }
@@ -99,7 +108,7 @@ namespace DungeonPrisonLib
         public List<Actor> GetActorsAtPosition(int x, int y)
         {
             List<Actor> actors = new List<Actor>();
-            foreach (var actor in actors)
+            foreach (var actor in _actors)
             {
                 if (actor.X == x && actor.Y == y)
                 {

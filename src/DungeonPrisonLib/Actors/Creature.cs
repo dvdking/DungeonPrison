@@ -2,6 +2,7 @@
 using DungeonPrisonLib.Actors.Items;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -12,6 +13,16 @@ namespace DungeonPrisonLib.Actors
     {
         public int MaxHealth;
         public int Health;
+
+        protected enum Conclusion
+        {
+            Succes,
+            Fail,
+            AlreadyWielding
+        }
+        protected delegate void OnItemWielded(Conclusion conclusion, Item item, Item newItem);
+
+        protected event OnItemWielded ItemWieldedEvent;
 
         public Inventory Inventory{get; private set;}
 
@@ -66,7 +77,15 @@ namespace DungeonPrisonLib.Actors
                 var creature = actor as Creature;
                 if(creature != null)
                 {
-                    int bonusDamage = WieldedItem == null? ((WieldedItem is MeleeWeapon) ? (WieldedItem as MeleeWeapon).Damage : 0) : 0;
+                    int bonusDamage = 0;
+                    if (WieldedItem != null)
+                    {
+                        if (WieldedItem is MeleeWeapon)
+                        {
+                            MeleeWeapon weapon = WieldedItem as MeleeWeapon;
+                            bonusDamage += weapon.Damage;
+                        }
+                    }
                     Attack(creature, new AttackInfo { Damage = 1 + bonusDamage, Message = GameName + (GameName == "you" ? " hit " : " hits ") + actor.GameName });
                     return;
                 }
@@ -100,22 +119,36 @@ namespace DungeonPrisonLib.Actors
         }
         public void WieldItem(Item item)
         {
+            Debug.Assert(Inventory.GetItems().Any(p => p == item), "item is not presented in inventory");
+
+
+
             if (WieldedItem == item)
             {
-                GameManager.Instance.Log.AddMessage("Already wielding that");
+                CallItemWielded(Conclusion.AlreadyWielding);
                 return;
             }
 
             if (WieldedItem == null)
             {
                 UsedTime += 1.0f;
+                CallItemWielded(Conclusion.Succes, null, item);
             }
             else
             {
                 UsedTime += 2.0f;
+                CallItemWielded(Conclusion.Succes, WieldedItem, item);
             }
 
             WieldedItem = item;
+        }
+
+        private void CallItemWielded(Conclusion conclusion, Item oldItem = null, Item newItem = null)
+        {
+            if(ItemWieldedEvent != null)
+            {
+                ItemWieldedEvent(conclusion, oldItem, newItem);
+            }
         }
     }
 }

@@ -10,6 +10,9 @@ namespace DungeonPrisonConsoleRenderer.GUI
     class GUIElement
     {
         public Point Location;
+        public Size Size;
+
+        public bool InteruptInput{get; protected set;}
 
         protected GUIManager GuiManager { get; private set; }
         public void SetGuiManager(GUIManager guiManager)

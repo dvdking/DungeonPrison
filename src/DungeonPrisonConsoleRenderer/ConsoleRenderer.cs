@@ -150,10 +150,8 @@ namespace DungeonPrisonConsoleRenderer
         public void Draw(Player player, List<Actor> actors, TileMap tileMap)
         {
             CleanBuffer();
-
             DrawTileMap(player, tileMap);
             DrawActors(player, actors);
-            DrawLog();
         }
 
         private void DrawActors(Player player, List<Actor> actors)
@@ -212,18 +210,7 @@ namespace DungeonPrisonConsoleRenderer
             }
         }
 
-        private void DrawLog()
-        {
-            var messages = GameManager.Instance.Log.GetMessages(Math.Max(0, GameManager.Instance.Log.MessagesCount - LogHeight), LogHeight);
-            if (messages == null)
-                return;
-            for (int i = 0; i < messages.Length; i++)
-            {
-                DrawString(LogPositionX, LogPositionY + i, messages[i]);
-            }
-        }
-
-        public void DrawString(int x, int y, string str)
+        public void DrawString(int x, int y, string str, ConsoleColor color = ConsoleColor.White)
         {
             if (y >= _screenHeight)
                 return;
@@ -232,7 +219,7 @@ namespace DungeonPrisonConsoleRenderer
             {
                 if (x + i >= _screenWidth)
                     break;
-                _buffer[x + i, y] = new GraphicsInfo() { Char = str[i], Color = ConsoleColor.White };
+                _buffer[x + i, y] = new GraphicsInfo() { Char = str[i], Color = color };
             }
         }
 
@@ -248,7 +235,7 @@ namespace DungeonPrisonConsoleRenderer
             Console.Write(graphicsInfo.Char);
         }
 
-        private void CleanBuffer()
+        public void CleanBuffer()
         {
             for (int i = 0; i < _screenWidth; i++)
             {

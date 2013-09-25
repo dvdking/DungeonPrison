@@ -1,4 +1,6 @@
-﻿using DungeonPrisonLib;
+﻿using DungeonPrisonConsoleRenderer.GUI;
+using DungeonPrisonLib;
+using DungeonPrisonLib.Actors.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,12 @@ namespace DungeonPrisonConsoleRenderer
     {
         List<InputKey> PressedKeys = new List<InputKey>();
 
+        private GUIManager _guiManager;
 
+        public ConsoleInput(GUIManager guiManager)
+        {
+            _guiManager = guiManager;
+        }
 
         public void Update()
         {
@@ -45,11 +52,27 @@ namespace DungeonPrisonConsoleRenderer
                         GameManager.Instance.Player.PickUpItem();
                         break;
                     case InputKey.WieldWeapon:
-                        //ChooseWeaponToWield();
+                        var inventory = new InventoryElement(InventoryElement.InventoryType.WieldWeapon);
+                        inventory.ItemChosen += inventory_ItemChosen;
+                        _guiManager.AddElement(inventory);
                         break;
                     default:
                         break;
                 }
+            }
+        }
+
+        private void inventory_ItemChosen(InventoryElement.InventoryType type, Item chosenItem)
+        {
+            switch (type)
+            {
+                case InventoryElement.InventoryType.Browse:
+                    break;
+                case InventoryElement.InventoryType.WieldWeapon:
+                    GameManager.Instance.Player.WieldItem(chosenItem);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -78,6 +101,18 @@ namespace DungeonPrisonConsoleRenderer
                     break;
                 case ConsoleKey.G:
                     PressedKeys.Add(InputKey.PickUp);
+                    break;
+                case ConsoleKey.Escape:
+                    PressedKeys.Add(InputKey.Cancel);
+                    break;
+                case ConsoleKey.W:
+                    PressedKeys.Add(InputKey.WieldWeapon);
+                    break;
+                case ConsoleKey.I:
+                    PressedKeys.Add(InputKey.OpenInventory);
+                    break;
+                case ConsoleKey.Enter:
+                    PressedKeys.Add(InputKey.Accept);
                     break;
             }
         }
