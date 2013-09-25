@@ -10,9 +10,9 @@ using System.Xml;
 
 namespace DungeonPrisonConsoleRenderer
 {
-    class ConsoleRenderer:IRenderer
+    public class ConsoleRenderer:IRenderer
     {
-        private struct GraphicsInfo
+        public struct GraphicsInfo
         {
             public char Char;
             public ConsoleColor Color;
@@ -154,10 +154,6 @@ namespace DungeonPrisonConsoleRenderer
             DrawTileMap(player, tileMap);
             DrawActors(player, actors);
             DrawLog();
-            DrawHealthBar(HealthBarPositionX, HealthBarPositionY, player);
-
-
-            DrawBuffer();
         }
 
         private void DrawActors(Player player, List<Actor> actors)
@@ -227,12 +223,7 @@ namespace DungeonPrisonConsoleRenderer
             }
         }
 
-        private void DrawHealthBar(int x, int y, Player player)
-        {
-            DrawString(x,y, player.Health +"/" + player.MaxHealth);
-        }
-
-        private void DrawString(int x, int y, string str)
+        public void DrawString(int x, int y, string str)
         {
             if (y >= _screenHeight)
                 return;
@@ -245,7 +236,7 @@ namespace DungeonPrisonConsoleRenderer
             }
         }
 
-        private void DrawGraphicsInfoToBuffer(int x, int y, GraphicsInfo graphicsInfo)
+        public void DrawGraphicsInfoToBuffer(int x, int y, GraphicsInfo graphicsInfo)
         {
             _buffer[x, y] = graphicsInfo;
         }
@@ -268,7 +259,7 @@ namespace DungeonPrisonConsoleRenderer
             }
         }
 
-        private void DrawBuffer()
+        public void DrawBuffer()
         {
             for (int i = 0; i < _screenWidth; i++)
             {

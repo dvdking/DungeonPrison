@@ -47,6 +47,9 @@
     <Compile Include="ConsoleInput.cs" />
     <Compile Include="ConsoleRenderer.cs" />
     <Compile Include="ConsoleUI.cs" />
+    <Compile Include="GUI\GUIElement.cs" />
+    <Compile Include="GUI\GUIManager.cs" />
+    <Compile Include="GUI\HealthBar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

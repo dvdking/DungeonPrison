@@ -10,12 +10,56 @@ namespace DungeonPrisonConsoleRenderer
     {
         List<InputKey> PressedKeys = new List<InputKey>();
 
+
+
         public void Update()
         {
-            PressedKeys.Clear();
-            var key = Console.ReadKey(true);
+            UpdateConsoleKeys();
 
-            switch (key.Key)
+            UpdateUserControl();
+
+        }
+
+        private void UpdateUserControl()
+        {
+            foreach (var key in PressedKeys)
+            {
+                switch (key)
+                {
+                    case InputKey.MoveLeft:
+                        GameManager.Instance.Player.Move(-1, 0, GameManager.Instance.TileMap);
+                        break;
+                    case InputKey.MoveRight:
+                        GameManager.Instance.Player.Move(1, 0, GameManager.Instance.TileMap);
+                        break;
+                    case InputKey.MoveUp:
+                        GameManager.Instance.Player.Move(0, -1, GameManager.Instance.TileMap);
+                        break;
+                    case InputKey.MoveDown:
+                        GameManager.Instance.Player.Move(0, 1, GameManager.Instance.TileMap);
+                        break;
+                    case InputKey.Wait:
+                        GameManager.Instance.Player.Wait();
+                        break;
+                    case InputKey.PickUp:
+                        GameManager.Instance.Player.PickUpItem();
+                        break;
+                    case InputKey.WieldWeapon:
+                        //ChooseWeaponToWield();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void UpdateConsoleKeys()
+        {
+            PressedKeys.Clear();
+            var consoleKey = Console.ReadKey(true);
+
+
+            switch (consoleKey.Key)
             {
                 case ConsoleKey.LeftArrow:
                     PressedKeys.Add(InputKey.MoveLeft);

@@ -20,21 +20,21 @@ namespace DungeonPrisonLib
             Instance = new GameManager(renderer, input);
         }
 
-        private bool _exit;
+        public bool Exit;
 
         IRenderer _renderer;
         public IInput Input{get; private set;}
         public Log Log{get; private set;}
         public LOS LOS { get; private set; }
 
-        TileMap _tileMap;
+        public TileMap TileMap{get; private set;}
 
         List<Actor> _actors;
 
         Queue<Actor> _actorsToAdd;
         Queue<Actor> _actorsToRemove;
 
-        Player _player;
+        public Player Player{get; private set;}
 
         public GameManager(IRenderer renderer, IInput input)
         {
@@ -48,46 +48,39 @@ namespace DungeonPrisonLib
             _actorsToAdd = new Queue<Actor>(16);
             _actorsToRemove = new Queue<Actor>(16);
 
-            _player = new Player();
-            _player.SetBehaviour(new PlayerBehaviour(_player));
-            _player.Name = "you";
-            _player.GameName = "you";
-            _player.X = 4;
-            _player.Y = 2;
-            _actors.Add(_player);
-            _player.MaxHealth = 15;
-            _player.Health = 15;
+            Player = new Player();
+            Player.SetBehaviour(new PlayerBehaviour(Player));
+            Player.Name = "you";
+            Player.GameName = "you";
+            Player.X = 4;
+            Player.Y = 2;
+            _actors.Add(Player);
+            Player.MaxHealth = 15;
+            Player.Health = 15;
 
             var act = new Creature();
             act.SetBehaviour(new SomeGuyBehaviour(act));
             act.Name = "BrainlessSlime";
             act.GameName = "brainless slime";
             act.X = 3;
-            act.Y = 6;
+            act.Y = 5;
             act.MaxHealth = 5;
             act.Health = 5;
             _actors.Add(act);
 
-            _tileMap = new TileMap(30, 30);
-            _tileMap.ReadSimpleMap("map1.txt");
+            TileMap = new TileMap(30, 30);
+            TileMap.ReadSimpleMap("map1.txt");
         }
 
         public void Run()
         {
             UpdateWorld(0.0f);
             Draw();
-            float delta = 0.0f;
-            while (!_exit)
+            while (!Exit)
             {
-                if (delta > 0.001f)
-                {
-                    UpdateWorld(delta);
-                }
                 Draw();
-
                 Input.Update();
-                _player.Update(0.0f, _tileMap);
-                delta = _player.UsedTime;
+                Update();
             }
         }
 
@@ -121,6 +114,16 @@ namespace DungeonPrisonLib
             _actorsToRemove.Enqueue(actor);
         }
 
+        public void Update()
+        {
+            if (Player.UsedTime > 0.001f)
+            {
+                UpdateWorld(Player.UsedTime);
+            }
+            Player.Update(0.0f, TileMap);
+            LOS.UpdateVisibleArea(Player, TileMap);
+        }
+
         private void UpdateWorld(float delta)
         {
             foreach (var actor in _actorsToRemove)
@@ -131,16 +134,16 @@ namespace DungeonPrisonLib
 
             foreach (var actor in _actors)
             {
-                if(actor.IsAlive && actor != _player)
-                    actor.Update(delta, _tileMap);
+                if(actor.IsAlive && actor != Player)
+                    actor.Update(delta, TileMap);
             }
 
-            LOS.UpdateVisibleArea(_player, _tileMap);
+            
         }
-        private void Draw()
+        public void Draw()
         {
             if (_renderer != null)
-                _renderer.Draw(_player, _actors, _tileMap);
+                _renderer.Draw(Player, _actors, TileMap);
         }
     }
 }

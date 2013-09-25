@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DungeonPrisonLib;
+using DungeonPrisonConsoleRenderer.GUI;
+using System.Drawing;
 namespace DungeonPrisonConsoleRenderer
 {
     class Program
@@ -10,6 +12,13 @@ namespace DungeonPrisonConsoleRenderer
         static void Main(string[] args)
         {
             var renderer = new ConsoleRenderer(64,25);
+            var guiManager = new GUIManager(renderer);
+
+            var healthBar = new HealthBar() 
+            {
+                Location = new Point(32, 1) 
+            };
+            guiManager.AddElement(healthBar);
 
             renderer.LogPositionX = 1;
             renderer.LogPositionY = 17;
@@ -21,7 +30,19 @@ namespace DungeonPrisonConsoleRenderer
             if (renderer.ReadGraphicsInfoData("Content//GraphicsInfo.xml"))
             {
                 GameManager.CreateInstance(renderer, new ConsoleInput());
-                GameManager.Instance.Run();
+
+                GameManager.Instance.Update();
+                GameManager.Instance.Draw();
+
+                while (!GameManager.Instance.Exit)
+                {
+                    GameManager.Instance.Draw();
+                    guiManager.Draw();
+                    renderer.DrawBuffer();
+
+                    GameManager.Instance.Input.Update();
+                    GameManager.Instance.Update();
+                }
             }
             else
             {
