@@ -12,6 +12,20 @@ namespace DungeonPrisonLib.Actors
             :base()
         {
             ItemWieldedEvent += Player_ItemWieldedEvent;
+            ItemPickedUpEvent += Player_ItemPickedUpEvent;
+            Depth = -2;
+        }
+
+        void Player_ItemPickedUpEvent(Items.Item item)
+        {
+            if (item == null)
+            {
+                GameManager.Instance.Log.AddMessage("There is nothing to pick up");
+            }
+            else
+            {
+                GameManager.Instance.Log.AddMessage("You pick up " + item.Name);
+            }
         }
 
         void Player_ItemWieldedEvent(Creature.Conclusion conclusion, Items.Item oldItem, Items.Item newItem)

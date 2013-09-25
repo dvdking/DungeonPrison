@@ -159,7 +159,7 @@ namespace DungeonPrisonConsoleRenderer
             int halfWidth = Settings.PlayerView.Width / 2;
             int halfHeight = Settings.PlayerView.Height / 2;
 
-            foreach (var item in actors.Where(p => p.IsAlive))
+            foreach (var item in actors.Where(p => p.IsAlive).OrderByDescending(p => p.Depth))
             {
                 int relativeX = player.X - item.X;
                 int relativeY = player.Y - item.Y;

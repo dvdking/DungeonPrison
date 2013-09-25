@@ -97,12 +97,28 @@ namespace DungeonPrisonConsoleRenderer.GUI
             var renderer = GuiManager.Renderer;
 
             renderer.CleanBuffer();
-
             int row = 0;
+            string topMessage = "";
+            switch (_type)
+            {
+                case InventoryType.Browse:
+                    break;
+                case InventoryType.WieldWeapon:
+                    topMessage = "Wield what?";
+                    break;
+                default:
+                    break;
+            }
+            renderer.DrawString(Location.X, Location.Y + row, topMessage);
+            row++;
+            renderer.DrawString(Location.X, Location.Y + row, "______________________________________");
+            row++;
+            int curItem = 0;
             foreach (var item in GameManager.Instance.Player.Inventory.GetItems())
             {
-                renderer.DrawString(Location.X, Location.Y + row, (row == ChosenItem ? " -> " : "") + item.GameName, item == GameManager.Instance.Player.WieldedItem ? ConsoleColor.Green : ConsoleColor.White);
+                renderer.DrawString(Location.X, Location.Y + row, (curItem == ChosenItem ? " -> " : "") + item.GameName, item == GameManager.Instance.Player.WieldedItem ? ConsoleColor.Green : ConsoleColor.White);
                 row++;
+                curItem++;
             }
         }
     }

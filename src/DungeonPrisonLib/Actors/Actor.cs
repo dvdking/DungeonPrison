@@ -14,6 +14,8 @@ namespace DungeonPrisonLib.Actors
 
         public int X, Y;
 
+        public int Depth;
+
         public abstract void Update(float delta, TileMap tileMap);
 
         public Actor()

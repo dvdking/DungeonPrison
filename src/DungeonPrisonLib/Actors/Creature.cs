@@ -21,8 +21,10 @@ namespace DungeonPrisonLib.Actors
             AlreadyWielding
         }
         protected delegate void OnItemWielded(Conclusion conclusion, Item item, Item newItem);
+        protected delegate void OnItemPickedUp(Item item);
 
         protected event OnItemWielded ItemWieldedEvent;
+        protected event OnItemPickedUp ItemPickedUpEvent;
 
         public Inventory Inventory{get; private set;}
 
@@ -36,6 +38,7 @@ namespace DungeonPrisonLib.Actors
         public Creature()
         {
             Inventory = new Inventory();
+            Depth = -1;
         }
 
         public void SetBehaviour(Behaviour behaviour)
@@ -111,11 +114,13 @@ namespace DungeonPrisonLib.Actors
                 if(actor is Item)
                 {
                     GameManager.Instance.DestroyObject(actor);
-                    Inventory.AddItem(actor as Item);
-                }
-	        }
+                    var item = actor as Item;
+                    Inventory.AddItem(item);
 
-            UsedTime += 1.0f;
+                    CallItemPickedUp(item);
+                    UsedTime += 1.0f;
+                }
+	        }      
         }
         public void WieldItem(Item item)
         {
@@ -148,6 +153,14 @@ namespace DungeonPrisonLib.Actors
             if(ItemWieldedEvent != null)
             {
                 ItemWieldedEvent(conclusion, oldItem, newItem);
+            }
+        }
+
+        private void CallItemPickedUp(Item item)
+        {
+            if (ItemPickedUpEvent != null)
+            {
+                ItemPickedUpEvent(item);
             }
         }
     }
