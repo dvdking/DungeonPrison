@@ -80,11 +80,15 @@ namespace DungeonPrisonLib.Actors
 
         internal void Attack(Creature creature, AttackInfo attackInfo)
         {
+            Debug.Assert(MaxHealth != 0, "Max health = 0");
+
             if (!IsAlive)
                 return;
+
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
             creature.Health -= attackInfo.Damage;
-            creature.RelationManager.ChangeRelation(this, -30);
+            
+            creature.RelationManager.ChangeRelation(this, (int)(-30*(float)(attackInfo.Damage*Health*1.25f)/(float)MaxHealth*0.75f));// todo adjust these to according to creature
             creature.CheckDeath();
 
             if (creature.WasAttackedEvent != null)
@@ -111,8 +115,8 @@ namespace DungeonPrisonLib.Actors
             if (!IsAlive)
                 return;
             if (tileMap.InBounds(X + x, Y + y))
-               if (tileMap.IsSolid(X + x, Y + y))
-                return;
+                if (tileMap.IsSolid(X + x, Y + y))
+                    return;
 
             var actor = GameManager.Instance.GetActorAtPosition(X + x, Y + y);
            
