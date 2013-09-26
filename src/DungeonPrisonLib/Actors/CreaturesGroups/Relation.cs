@@ -12,23 +12,26 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
         Neutral,
         Freindly
     }
+
+    public static class ReletionHelper
+    {
+        public static RelationsTypes GetReletion(int amount)
+        {
+            if (amount < -35)
+                return RelationsTypes.Enemies;
+            if (amount >= -35 && amount < 40)
+                return RelationsTypes.Neutral;
+            return RelationsTypes.Freindly;
+        }
+    }
     
     public class CreatureRelation
     {
-        public RelationsTypes Type
-        {
-            get
-            {
-                if (RelationAmount < -35)
-                    return RelationsTypes.Enemies;
-                if (RelationAmount >= -35 && RelationAmount < 40)
-                    return RelationsTypes.Neutral;
-                return RelationsTypes.Freindly;
-            }
-        }
 
         public Creature Creature;
         public int RelationAmount;
         public int LastTimeInteracted;
+
+
     }
 }

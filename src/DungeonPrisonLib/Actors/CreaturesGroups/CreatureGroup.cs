@@ -16,12 +16,7 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
         {
             int relationAmount = GetRelationAmountToGroup();
 
-            if (relationAmount < -35)
-                return RelationsTypes.Enemies;
-            if (relationAmount >= -35 && relationAmount < 40)
-                return RelationsTypes.Neutral;        
-        
-            return RelationsTypes.Freindly;
+            return ReletionHelper.GetReletion(relationAmount);
             
         }
         public int GetRelationAmountToGroup()
@@ -55,6 +50,15 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
         {
             Relations = new List<GroupRelation>();
             Creatures = new List<Creature>();
+
+
+            // small hack
+            // need to get relation to creature even if a creature in this group
+            Relations.Add(new GroupRelation()
+            {
+                Group = this,
+                OtherGroup = this,
+            });
         }
 
         public void AddGroupRelation(CreatureGroup group)
@@ -101,12 +105,29 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
                 Debug.Fail("group is null");
                 return RelationsTypes.Unknown;
             }
+            if (group == this)
+                return RelationsTypes.Freindly;
 
             var relation = Relations.Find(p => p.OtherGroup == group);
             if (relation == null)
                 return RelationsTypes.Unknown;
 
             return relation.GetRelationTypeToGroup();
+        }
+
+        public int GetRelationAmount(CreatureGroup group)
+        {
+            if (group == null)
+            {
+                Debug.Fail("group is null");
+                return 0;
+            }
+
+            var relation = Relations.Find(p => p.OtherGroup == group);
+            if (relation == null)
+                return 0;
+
+            return relation.GetRelationAmountToGroup();
         }
 
         public override string ToString()

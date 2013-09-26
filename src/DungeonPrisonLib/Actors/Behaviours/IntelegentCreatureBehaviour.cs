@@ -52,6 +52,14 @@ namespace DungeonPrisonLib.Actors.Behaviours
                               Math.Sign(-Creature.Position.Y + nextPos.Y),
                               tileMap);
 
+                if (!_lastTarget.IsAlive)
+                {
+                    _lastTarget = null;
+                    _path.Clear();
+                    return;
+                }
+
+
                 if (nextPos == Creature.Position)
                 {
                     _path.Dequeue();// remove element only if we actualy moved that way
@@ -61,20 +69,18 @@ namespace DungeonPrisonLib.Actors.Behaviours
             }
         }
 
-        private void UpdateMeetCreatureBehaviour(Creature creature)
+        private void UpdateMeetCreatureBehaviour(Creature metCreature)
         {
-           
-            var relationType = Creature.CreatureGroup == null || 
-                               creature.CreatureGroup == null? RelationsTypes.Unknown
-                                                             : Creature.CreatureGroup.GetRelationType(creature.CreatureGroup);
+
+            var relationType = Creature.RelationManager.GetReletionTypeToCreature(metCreature);
 
             switch (relationType)
             {
                 case RelationsTypes.Unknown:
-                    creature.RelationManager.AddRelation(creature);
+                    metCreature.RelationManager.AddRelation(metCreature);
                     break;
                 case RelationsTypes.Enemies:
-                    OnMeetEnemy(creature);
+                    OnMeetEnemy(metCreature);
                     break;
                 case RelationsTypes.Neutral:
                     break;
@@ -86,17 +92,17 @@ namespace DungeonPrisonLib.Actors.Behaviours
 
         }
 
-        private void OnMeetEnemy(Creature creature)
+        private void OnMeetEnemy(Creature metCreature)
         {
             if (_lastTarget == null)
             {
-                _lastTarget = creature;
+                _lastTarget = metCreature;
             }
-            if (_lastTarget == creature)
+            if (_lastTarget == metCreature)
             {
-                if (_lastTargetPosition != creature.Position)
+                if (_lastTargetPosition != metCreature.Position)
                 {
-                    _lastTargetPosition = creature.Position;
+                    _lastTargetPosition = metCreature.Position;
                     _targetPositionChanged = true;
                 }
             }

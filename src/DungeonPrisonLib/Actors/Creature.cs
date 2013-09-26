@@ -11,13 +11,6 @@ using System.Text;
 
 namespace DungeonPrisonLib.Actors
 {
-    public enum CreatureRace
-    {
-        Human,
-        Orc
-    }
-
-
     public class Creature:Actor
     {
         public int MaxHealth;
@@ -31,9 +24,11 @@ namespace DungeonPrisonLib.Actors
         }
         protected delegate void OnItemWielded(Conclusion conclusion, Item item, Item newItem);
         protected delegate void OnItemPickedUp(Item item);
+        public delegate void OnAtacked(Creature attacker);
 
         protected event OnItemWielded ItemWieldedEvent;
         protected event OnItemPickedUp ItemPickedUpEvent;
+        public event OnAtacked WasAttackedEvent;
 
         public Inventory Inventory{get; private set;}
 
@@ -49,7 +44,7 @@ namespace DungeonPrisonLib.Actors
         public Creature()
         {
             Inventory = new Inventory();
-            RelationManager = new RelationManager();
+            RelationManager = new RelationManager(this);
             CreatureGroup = null;
 
             Depth = -1;
@@ -85,9 +80,18 @@ namespace DungeonPrisonLib.Actors
 
         internal void Attack(Creature creature, AttackInfo attackInfo)
         {
+            if (!IsAlive)
+                return;
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
             creature.Health -= attackInfo.Damage;
+            creature.RelationManager.ChangeRelation(this, -30);
             creature.CheckDeath();
+
+            if (creature.WasAttackedEvent != null)
+            {
+                creature.WasAttackedEvent(this);
+            }
+
             UsedTime += 1.0f;
         }
 
@@ -104,6 +108,8 @@ namespace DungeonPrisonLib.Actors
 
         public void Move(int x, int y, TileMap tileMap)
         {
+            if (!IsAlive)
+                return;
             if (tileMap.InBounds(X + x, Y + y))
                if (tileMap.IsSolid(X + x, Y + y))
                 return;
@@ -137,11 +143,16 @@ namespace DungeonPrisonLib.Actors
 
         public void Wait()
         {
+            if (!IsAlive)
+                return;
             UsedTime += 1.0f;
         }
 
         public void PickUpItem()
         {
+            if (!IsAlive)
+                return;
+
             var actors = GameManager.Instance.GetActorsAtPosition(X, Y);
 
             foreach (var actor in actors)
@@ -159,6 +170,8 @@ namespace DungeonPrisonLib.Actors
         }
         public void WieldItem(Item item)
         {
+            if (!IsAlive)
+                return;
             Debug.Assert(Inventory.GetItems().Any(p => p == item), "item is not presented in inventory");
 
 
