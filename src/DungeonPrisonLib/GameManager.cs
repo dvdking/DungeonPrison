@@ -57,6 +57,7 @@ namespace DungeonPrisonLib
             TileMapGenerator gen = new TileMapGenerator();
 
             TileMap = gen.GenerateTileMap(256, 256, TlleMapType.NeutralDungeon);
+            TileMap.PrintMapToFile("map.bmp");
         }
 
         public void InitGame()

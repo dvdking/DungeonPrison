@@ -15,13 +15,14 @@ namespace DungeonPrisonLib.WorldGenerator
             TileMap _tileMap;
             bool _createMiners;
             Point[] _choises;
+            NeutralDungeonGenerator _gen;
 
 
-            public Miner(TileMap tileMap, bool createMiners = false, Point[] choises = null)
+            public Miner(NeutralDungeonGenerator gen, TileMap tileMap, bool createMiners = false, Point[] choises = null)
             {
                 X = RandomTool.NextInt(tileMap.Width);
                 Y = RandomTool.NextInt(tileMap.Height);
-
+                _gen = gen;
                 _tileMap = tileMap;
                 if (choises == null)
                 {
@@ -45,6 +46,8 @@ namespace DungeonPrisonLib.WorldGenerator
                     {
                         if (_tileMap.InBounds(X + i, Y + j))
                         {
+                            if (_tileMap.GetTile(X, Y).Type == TileType.Wall)
+                                _gen.UsedTiles++;
                             _tileMap.SetTile(X + i, Y + j, new Tile { Type = TileType.Floor });
                         }
                     }
@@ -74,7 +77,7 @@ namespace DungeonPrisonLib.WorldGenerator
                             ch[i] = _choises[RandomTool.NextInt(_choises.Length)];
 			            }
 
-                        return new Miner(_tileMap, RandomTool.NextBool(0.005f), _choises) { X = X, Y = Y};
+                        return new Miner(_gen, _tileMap, RandomTool.NextBool(0.005f), _choises) { X = X, Y = Y};
                     }
                 }
                 return null;
@@ -92,6 +95,10 @@ namespace DungeonPrisonLib.WorldGenerator
             }
         }
 
+        public int UsedTiles;
+
+        public const int NeedToMinUse = 50;
+
         public NeutralDungeonGenerator()
         {
         }
@@ -103,12 +110,17 @@ namespace DungeonPrisonLib.WorldGenerator
             tileMap.FeelWith(new Tile{ Type = TileType.Wall });
 
             List<Miner> miners = new List<Miner>();
-            miners.Add(new Miner(tileMap, true) );
-           // miners.Add(new Miner(tileMap, true));
-            //miners.Add(new Miner(tileMap, true) { size = 2});
+            for (int i = 0; i < 1; i++)
+            {
+                miners.Add(new Miner(this, tileMap, true));
+            }
+            
+
 
 
             Queue<Miner> newMiners = new Queue<Miner>(4);
+
+
             while (miners.Count > 0)
             {
                 foreach (var miner in miners)
@@ -124,6 +136,13 @@ namespace DungeonPrisonLib.WorldGenerator
                 }
 
                 miners.RemoveAll(p => !p.IsAlive(tileMap));
+                if(miners.Count == 0)
+                {
+                    if (UsedTiles < width * height * NeedToMinUse / 100.0f)
+                    {
+                        miners.Add(new Miner(this, tileMap, false));
+                    }
+                }
             }
 
             return tileMap;

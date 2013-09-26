@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -130,5 +131,47 @@ namespace DungeonPrisonLib
             return p;
         }
 
+        public unsafe void PrintMapToFile(string file)
+        {
+            Bitmap b = new Bitmap(Width, Height);
+
+            var data = b.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+
+            byte* ptr = (byte*)data.Scan0.ToPointer();
+            int t = 0;
+
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    Color color = GetTileColor(Map[i,j]);
+                    
+                    ptr[t++] = color.R;
+                    ptr[t++] = color.G;
+                    ptr[t++] = color.B;
+                }
+            }
+
+            b.UnlockBits(data);
+
+            b.Save(file);
+        }
+
+        private Color GetTileColor(Tile tile)
+        {
+            switch (tile.Type)
+            {
+                case TileType.Nothing:
+                    return Color.Red;
+                case TileType.Wall:
+                    return Color.Black;
+                case TileType.Floor:
+                    return Color.Wheat;
+                default:
+                    break;
+            }
+
+            return Color.White;
+        }
     }
 }
