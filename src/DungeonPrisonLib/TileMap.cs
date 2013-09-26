@@ -33,6 +33,28 @@ namespace DungeonPrisonLib
 
             return Map[x, y];
         }
+        public void SetTile(int x, int y, Tile tile)
+        {
+            if (!InBounds(x, y))
+            {
+                Debug.Fail("Error occured call a dev", "Index was outside the range");
+                return;
+            }
+
+            Map[x, y] =  tile;
+        }
+
+        public void FeelWith(Tile tile)
+        {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    Map[i, j] = tile;
+                }
+            }
+        }
+
         public bool IsSolid(Point p)
         {
             return IsSolid(p.X, p.Y);
@@ -86,8 +108,26 @@ namespace DungeonPrisonLib
             }
             catch(IOException e)
             {
+                Debug.Fail("File could not be loaded: \n" + e.ToString());
                 return;
             }
+        }
+
+        public Point GetRandomEmptyPlace()
+        {
+            Point p;
+            int tries = 200;
+            do
+            {
+                p = new Point(RandomTool.NextInt(Width), RandomTool.NextInt(Height));
+                if (tries-- < 0)
+                {
+                    Debug.Fail("NO EMPTY PLACE FOR YOU MOTHER FUCKER");
+                    return new Point(-1,-1);
+                }
+            } while (IsSolid(p.X, p.Y));
+
+            return p;
         }
 
     }

@@ -11,6 +11,8 @@ namespace DungeonPrisonConsoleRenderer
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Loading...");
+
             var renderer = new ConsoleRenderer(64,25);
             var guiManager = new GUIManager(renderer);
 

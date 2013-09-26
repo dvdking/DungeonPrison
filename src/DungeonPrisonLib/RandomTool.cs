@@ -40,6 +40,11 @@ namespace DungeonPrisonLib
             return objects[NextInt(objects.Length)];
         }
 
+        public static T NextChoice<T>(params T[] objects)
+        {
+            return objects[NextInt(objects.Length)];
+        }
+
         public static byte NextByte()
         {
             return (byte)random.Next();

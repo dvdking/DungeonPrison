@@ -2,8 +2,10 @@
 using DungeonPrisonLib.Actors.Behaviours;
 using DungeonPrisonLib.Actors.CreaturesGroups;
 using DungeonPrisonLib.Actors.Items;
+using DungeonPrisonLib.WorldGenerator;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -52,8 +54,9 @@ namespace DungeonPrisonLib
             _actorsToAdd = new Queue<Actor>(16);
             _actorsToRemove = new Queue<Actor>(16);
 
-            TileMap = new TileMap(30, 30);
-            TileMap.ReadSimpleMap("map1.txt");
+            TileMapGenerator gen = new TileMapGenerator();
+
+            TileMap = gen.GenerateTileMap(256, 256, TlleMapType.NeutralDungeon);
         }
 
         public void InitGame()
@@ -83,11 +86,11 @@ namespace DungeonPrisonLib
             Player.Name = "you";
             Player.GameName = "you";
             Player.AddToGroup("Klarks");
-            Player.X = 4;
-            Player.Y = 2;
-            _actors.Add(Player);
+            Player.Position = TileMap.GetRandomEmptyPlace();
             Player.MaxHealth = 15;
             Player.Health = 15;
+
+            _actors.Add(Player);
         }
 
         private void CreateTestGroups()

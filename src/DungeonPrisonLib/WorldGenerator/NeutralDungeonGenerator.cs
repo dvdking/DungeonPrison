@@ -13,12 +13,23 @@ namespace DungeonPrisonLib.WorldGenerator
             public int X, Y;
             public int size = 1;
             TileMap _tileMap;
-            public Miner(TileMap tileMap)
+            bool _createMiners;
+            Point[] _choises;
+
+
+            public Miner(TileMap tileMap, bool createMiners = false, Point[] choises = null)
             {
                 X = RandomTool.NextInt(tileMap.Width);
                 Y = RandomTool.NextInt(tileMap.Height);
 
                 _tileMap = tileMap;
+                if (choises == null)
+                {
+                    _choises = new Point[]{new Point(-1, 0),
+                                            new Point(1, 0),
+                                            new Point(0, 1),
+                                            new Point(0, -1)};
+                }
             }
 
             public void Dig()
@@ -35,7 +46,7 @@ namespace DungeonPrisonLib.WorldGenerator
                 }
             }
 
-            public void Update()
+            public Miner Update()
             {
                 Point nextDirection = GetNextDirection();
 
@@ -43,14 +54,30 @@ namespace DungeonPrisonLib.WorldGenerator
                 Y += nextDirection.Y;
 
                 Dig();
+
+                if (_createMiners)
+                {
+                    if (RandomTool.NextBool(0.01f))
+                    {
+                        if(_choises.Length == 0)
+                            return null;
+
+                        var ch = new Point[_choises.Length - 1];                        
+
+                        for (int i = 0; i < ch.Length; i++)
+			            {
+                            ch[i] = _choises[RandomTool.NextInt(_choises.Length)];
+			            }
+
+                        return new Miner(_tileMap, RandomTool.NextBool(0.05f), _choises) { X = X, Y = Y};
+                    }
+                }
+                return null;
             }
 
             Point GetNextDirection()
             {
-                return RandomTool.NextChoice<Point>(new Point(-1, 0),
-                                                    new Point(1, 0),
-                                                    new Point(0, 1),
-                                                    new Point(0, -1));
+                return RandomTool.NextChoice<Point>(_choises);
             }
 
 
@@ -71,16 +98,26 @@ namespace DungeonPrisonLib.WorldGenerator
             tileMap.FeelWith(new Tile{ Type = TileType.Wall });
 
             List<Miner> miners = new List<Miner>();
-            miners.Add(new Miner(tileMap));
-            miners.Add(new Miner(tileMap));
-            miners.Add(new Miner(tileMap) { size = 2});
+            miners.Add(new Miner(tileMap, true) );
+            miners.Add(new Miner(tileMap, true));
+            miners.Add(new Miner(tileMap, true) { size = 2});
 
+
+            Queue<Miner> newMiners = new Queue<Miner>(4);
             while (miners.Count > 0)
             {
                 foreach (var miner in miners)
                 {
-                    miner.Update();
+                    var newMiner = miner.Update();
+                    if(newMiner != null)
+                        newMiners.Enqueue(newMiner);
                 }
+
+                while (newMiners.Count != 0)
+                {
+                    miners.Add(newMiners.Dequeue());
+                }
+
                 miners.RemoveAll(p => !p.IsAlive(tileMap));
             }
 
