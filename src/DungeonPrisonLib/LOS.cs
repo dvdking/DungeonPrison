@@ -51,11 +51,11 @@ namespace DungeonPrisonLib
 
         }
 
-        public bool InteserectsWall(Actor player, TileMap tileMap, int x, int y)
+        static public bool InteserectsWall(Actor actor, TileMap tileMap, float x, float y)
         {
             const int amount = 1;
 
-            if (!tileMap.InBounds(x, y))
+            if (!tileMap.InBounds((int)x, (int)y))
             {
                 return true;
             }
@@ -64,7 +64,7 @@ namespace DungeonPrisonLib
             y *= amount;
 
 
-            int t, px, py, ax, ay, sx, sy, dx, dy;
+            float t, px, py, ax, ay, sx, sy, dx, dy;
             px = 0;
             py = 0;
  
@@ -72,71 +72,52 @@ namespace DungeonPrisonLib
             * d is my dungeon structure and px is the players  *
             * x position. mx is the monsters x position passed *
             * to the function.                                 */
-           dx = x - player.X;
+           dx = x - actor.X*amount;
  
            /* dy is the same as dx using the y coordinates */
-           dy = y - player.Y;
+           dy = y - actor.Y*amount;
  
            /* ax & ay: these are the absolute values of dx & dy *
             * multiplied by 2 ( shift left 1 position)          */
-           ax = Math.Abs(dx)<<1;
-           ay = Math.Abs(dy)<<1;
+           ax = Math.Abs(dx)*2;
+           ay = Math.Abs(dy)*2;
  
            /* sx & sy: these are the signs of dx & dy */
            sx = Math.Sign(dx);
            sy = Math.Sign(dy);
  
            /* x & y: these are the monster's x & y coords */
-           px = player.X * amount;
-           py = player.Y * amount;
+           px = actor.X * amount;
+           py = actor.Y * amount;
  
            /* The following if statement checks to see if the line *
             * is x dominate or y dominate and loops accordingly    */
            if(ax > ay)
            {
-              /* X dominate loop */
-              /* t = the absolute of y minus the absolute of x divided *
-                 by 2 (shift right 1 position)                         */
-              t = ay - (ax >> 1);
+              t = ay - ax /2f;
               do
               {
                  if(t >= 0)
                  {
-                    /* if t is greater than or equal to zero then *
-                     * add the sign of dy to y                    *
-                     * subtract the absolute of dx from t         */
                     py += sy;
                     t -= ax;
                  }
- 
-                 /* add the sign of dx to x      *
-                  * add the adsolute of dy to t  */
+
                  px += sx;
                  t += ay;
  
-                 /* check to see if we are at the player's position */
                  if (px == x && py == y)
                  {
-                    /* return that the monster can see the player */
                     return true;
                  }
-              /* keep looping until the monster's sight is blocked *
-               * by an object at the updated x,y coord             */
               }
-              while (tileMap.IsSolid(px / amount, py / amount) == false);
- 
-              /* NOTE: sight_blocked is a function that returns true      *
-               * if an object at the x,y coord. would block the monster's *
-               * sight                                                    */
- 
-              /* the loop was exited because the monster's sight was blocked *
-               * return FALSE: the monster cannot see the player             */
+              while (tileMap.IsSolid((int)(px / amount),(int)( py / amount)) == false);
               return false;
            }
            else
            {
               /* Y dominate loop, this loop is basically the same as the x loop */
-              t = ax - (ay >> 1);
+              t = ax - ay /2f;
               do
               {
                  if(t >= 0)
@@ -151,7 +132,7 @@ namespace DungeonPrisonLib
                     return true;
                  }
               }
-              while (tileMap.IsSolid(px / amount, py / amount) == false);
+              while (tileMap.IsSolid((int)(px / amount),(int)(py / amount)) == false);
               return false;
            }
         }

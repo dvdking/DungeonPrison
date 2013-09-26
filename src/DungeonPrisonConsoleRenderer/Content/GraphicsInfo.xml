@@ -4,6 +4,7 @@
     <Actor ch ="@" name ="you" color="White"/>
     <Actor ch ="o" name ="BrainlessSlime" color="DarkGreen"/>
     <Actor ch ="/" name ="Sword" color="White"/>
+    <Actor ch ="@" name ="Human" color="White"/>
   </Actors>
   <Tiles>
     <Tile ch ="#" name ="wall" color="white"/>

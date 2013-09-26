@@ -19,7 +19,7 @@ namespace DungeonPrisonConsoleRenderer
             if (renderer.ReadGraphicsInfoData("Content//GraphicsInfo.xml"))
             {
                 GameManager.CreateInstance(renderer, new ConsoleInput(guiManager));
-
+                GameManager.Instance.InitGame();
                 GameManager.Instance.Update();
                 GameManager.Instance.Draw();
 

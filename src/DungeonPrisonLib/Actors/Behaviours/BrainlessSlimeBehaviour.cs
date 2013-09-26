@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DungeonPrisonLib.Actors.Behaviours
 {
-    class SomeGuyBehaviour:Behaviour
+    class BrainlessSlimeBehaviour:Behaviour
     {
-        public SomeGuyBehaviour(Creature actor)
+        public BrainlessSlimeBehaviour(Creature actor)
             : base(actor)
         {
  

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -13,6 +14,19 @@ namespace DungeonPrisonLib.Actors
         public string GameName;
 
         public int X, Y;
+
+        public Point Position 
+        {
+            get 
+            {
+                return new Point(X, Y); 
+            }
+            set 
+            { 
+                X = value.X;
+                Y = value.Y; 
+            }
+        }
 
         public int Depth;
 

@@ -1,14 +1,23 @@
 ﻿using DungeonPrisonLib.Actors.Behaviours;
+using DungeonPrisonLib.Actors.CreaturesGroups;
 using DungeonPrisonLib.Actors.Items;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
 
 namespace DungeonPrisonLib.Actors
 {
+    public enum CreatureRace
+    {
+        Human,
+        Orc
+    }
+
+
     public class Creature:Actor
     {
         public int MaxHealth;
@@ -30,14 +39,19 @@ namespace DungeonPrisonLib.Actors
 
         public Item WieldedItem;
 
-
         public float UsedTime{get;private set;}
+
+        public RelationManager RelationManager {get; private set;}
+        public CreatureGroup CreatureGroup { get; private set; }
 
         Behaviour _behaviour;
 
         public Creature()
         {
             Inventory = new Inventory();
+            RelationManager = new RelationManager();
+            CreatureGroup = null;
+
             Depth = -1;
         }
 
@@ -53,6 +67,22 @@ namespace DungeonPrisonLib.Actors
                 _behaviour.Update(delta, tileMap);
         }
 
+        public void AddToGroup(CreatureGroup group)
+        {
+            if (CreatureGroup != null)
+            {
+                CreatureGroup.RemoveCreatureFromGroup(this);
+            }
+
+            CreatureGroup = group;
+            CreatureGroup.AddCreatureToGroup(this);
+        }
+
+        public void AddToGroup(string groupName)
+        {
+            AddToGroup(GameManager.Instance.GroupManager.GetGroup(groupName));
+        }
+
         internal void Attack(Creature creature, AttackInfo attackInfo)
         {
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
@@ -65,6 +95,11 @@ namespace DungeonPrisonLib.Actors
         {
             if(Health <= 0)
                 Destroy();
+        }
+
+        public void Move(Point pos,TileMap tileMap)
+        {
+            Move(pos.X, pos.Y, tileMap);
         }
 
         public void Move(int x, int y, TileMap tileMap)
