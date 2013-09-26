@@ -30,6 +30,11 @@ namespace DungeonPrisonLib.WorldGenerator
                                             new Point(0, 1),
                                             new Point(0, -1)};
                 }
+                else
+                {
+                    _choises = choises;
+                }
+                _createMiners = createMiners;
             }
 
             public void Dig()
@@ -57,7 +62,7 @@ namespace DungeonPrisonLib.WorldGenerator
 
                 if (_createMiners)
                 {
-                    if (RandomTool.NextBool(0.01f))
+                    if (RandomTool.NextBool(0.001f))
                     {
                         if(_choises.Length == 0)
                             return null;
@@ -69,7 +74,7 @@ namespace DungeonPrisonLib.WorldGenerator
                             ch[i] = _choises[RandomTool.NextInt(_choises.Length)];
 			            }
 
-                        return new Miner(_tileMap, RandomTool.NextBool(0.05f), _choises) { X = X, Y = Y};
+                        return new Miner(_tileMap, RandomTool.NextBool(0.005f), _choises) { X = X, Y = Y};
                     }
                 }
                 return null;
@@ -99,8 +104,8 @@ namespace DungeonPrisonLib.WorldGenerator
 
             List<Miner> miners = new List<Miner>();
             miners.Add(new Miner(tileMap, true) );
-            miners.Add(new Miner(tileMap, true));
-            miners.Add(new Miner(tileMap, true) { size = 2});
+           // miners.Add(new Miner(tileMap, true));
+            //miners.Add(new Miner(tileMap, true) { size = 2});
 
 
             Queue<Miner> newMiners = new Queue<Miner>(4);
