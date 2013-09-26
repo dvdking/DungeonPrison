@@ -6,11 +6,6 @@ using System.Text;
 
 namespace DungeonPrisonLib.WorldGenerator
 {
-    public enum TlleMapType
-    {
-        NeutralDungeon
-    }
-
     public class TileMapGenerator
     {
         public TileMap GenerateTileMap(int width, int height, TlleMapType mapType)

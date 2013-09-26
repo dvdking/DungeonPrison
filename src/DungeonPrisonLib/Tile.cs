@@ -10,10 +10,10 @@ namespace DungeonPrisonLib
         public TileType Type;
     }
 
-    public enum TileType
+    public enum TileType : int
     {
-        Nothing,
-        Wall,
-        Floor
+        Nothing = 0,
+        Wall = 1, 
+        Floor = 2
     }
 }

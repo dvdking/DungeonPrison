@@ -8,6 +8,7 @@
 *.vshost
 *.exe
 *.cache
+map.bmp
 
 
 # Compiled Dynamic libraries

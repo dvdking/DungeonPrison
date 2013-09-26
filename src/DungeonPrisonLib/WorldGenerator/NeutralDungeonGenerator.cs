@@ -113,14 +113,10 @@ namespace DungeonPrisonLib.WorldGenerator
             for (int i = 0; i < 1; i++)
             {
                 miners.Add(new Miner(this, tileMap, true));
-            }
-            
-
-
+            } 
 
             Queue<Miner> newMiners = new Queue<Miner>(4);
-
-
+            
             while (miners.Count > 0)
             {
                 foreach (var miner in miners)

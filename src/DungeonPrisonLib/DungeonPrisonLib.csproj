@@ -74,9 +74,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />
+    <Compile Include="TileMapType.cs" />
     <Compile Include="WorldGenerator\NeutralDungeonGenerator.cs" />
     <Compile Include="WorldGenerator\TileMapGenerator.cs" />
     <Compile Include="WorldGenerator\WorldGenerator.cs" />
+    <Compile Include="World\WorldChunk.cs" />
+    <Compile Include="World\WorldManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

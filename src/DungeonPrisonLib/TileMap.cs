@@ -20,8 +20,11 @@ namespace DungeonPrisonLib
         {
             Width = sizeX;
             Height = sizeY;
+            Map = new Tile[Width, Height];            
+        }
 
-            Map = new Tile[Width, Height];
+        public TileMap()
+        {
         }
 
         public Tile GetTile(int x, int y)
@@ -129,6 +132,48 @@ namespace DungeonPrisonLib
             } while (IsSolid(p.X, p.Y));
 
             return p;
+        }
+
+        public void SaveMap(string path)
+        {
+            FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
+            // Create the writer for data.
+            BinaryWriter w = new BinaryWriter(fs);
+            // Write data to Test.data.
+
+            w.Write(Width);
+            w.Write(Height);
+
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    w.Write((int)Map[i, j].Type);
+                }
+            }
+            w.Close();
+            fs.Close();
+        }
+
+        public void LoadMap(string path)
+        {
+            var fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+            BinaryReader r = new BinaryReader(fs);
+
+            Width = r.ReadInt32();
+            Height = r.ReadInt32();
+
+            Map = new Tile[Width, Height];
+
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    Map[i, j].Type = (TileType)r.ReadInt32();// check 64 bit
+                }
+            }
+            r.Close();
+            fs.Close(); 
         }
 
         public unsafe void PrintMapToFile(string file)
