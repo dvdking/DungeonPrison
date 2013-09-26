@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,10 @@ namespace DungeonPrisonLib
 
             return Map[x, y];
         }
-
+        public bool IsSolid(Point p)
+        {
+            return IsSolid(p.X, p.Y);
+        }
         public bool IsSolid(int x, int y)
         {
             if (!InBounds(x, y))
@@ -41,6 +45,11 @@ namespace DungeonPrisonLib
             var tile = GetTile(x, y).Type;
 
             return tile == TileType.Wall;
+        }
+
+        public bool InBounds(Point p)
+        {
+            return InBounds(p.X, p.Y);
         }
 
         public bool InBounds(int x, int y)
