@@ -24,10 +24,15 @@ namespace DungeonPrisonLib.Actors
         }
         protected delegate void OnItemWielded(Conclusion conclusion, Item item, Item newItem);
         protected delegate void OnItemPickedUp(Item item);
+        protected delegate void OnArmorWorn(Conclusion conclusion, Armor armor, Armor newArmor);
         public delegate void OnAtacked(Creature attacker);
 
         protected event OnItemWielded ItemWieldedEvent;
         protected event OnItemPickedUp ItemPickedUpEvent;
+        protected event OnArmorWorn ArmorWorn;
+
+        protected Dictionary<ArmorPlace, Armor> WornArmor;
+
         public event OnAtacked WasAttackedEvent;
 
         public Inventory Inventory{get; private set;}
@@ -43,6 +48,8 @@ namespace DungeonPrisonLib.Actors
 
         public Creature()
         {
+            WornArmor = new Dictionary<ArmorPlace, Armor>();
+
             Inventory = new Inventory();
             RelationManager = new RelationManager(this);
             CreatureGroup = null;
@@ -198,6 +205,35 @@ namespace DungeonPrisonLib.Actors
             }
 
             WieldedItem = item;
+        }
+
+        public void TryWearArmor(Item item)
+        {
+            if (!IsAlive)
+                return;
+            if (!(item is Armor))
+            {
+                if (ArmorWorn != null)
+                {
+                    ArmorWorn(Conclusion.Fail, null, null);
+                }
+                return;
+            }
+
+            Armor armor = item as Armor;
+
+            Debug.Assert(Inventory.GetItems().Any(p => p == armor), "item is not presented in inventory");
+            if(armor == null)
+            {
+                Debug.Fail("armor is NULL");
+                return;
+            }
+            if (ArmorWorn != null)
+            {
+                ArmorWorn(Conclusion.Succes, WornArmor.ContainsKey(armor.Place) ? WornArmor[armor.Place] : null, armor);
+            }
+
+            WornArmor[armor.Place] = armor;
         }
 
         private void CallItemWielded(Conclusion conclusion, Item oldItem = null, Item newItem = null)

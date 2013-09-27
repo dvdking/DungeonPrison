@@ -51,15 +51,23 @@ namespace DungeonPrisonConsoleRenderer
                     case InputKey.PickUp:
                         GameManager.Instance.Player.PickUpItem();
                         break;
+                    case InputKey.EquipArmor:
+                        SelectInventoryItem(InventoryElement.InventoryType.WearArmor);
+                        break;
                     case InputKey.WieldWeapon:
-                        var inventory = new InventoryElement(InventoryElement.InventoryType.WieldWeapon);
-                        inventory.ItemChosen += inventory_ItemChosen;
-                        _guiManager.AddElement(inventory);
+                        SelectInventoryItem(InventoryElement.InventoryType.WieldWeapon);
                         break;
                     default:
                         break;
                 }
             }
+        }
+
+        private void SelectInventoryItem(InventoryElement.InventoryType type)
+        {
+            var inventory = new InventoryElement(type);
+            inventory.ItemChosen += inventory_ItemChosen;
+            _guiManager.AddElement(inventory);
         }
 
         private void inventory_ItemChosen(InventoryElement.InventoryType type, Item chosenItem)
@@ -71,7 +79,11 @@ namespace DungeonPrisonConsoleRenderer
                 case InventoryElement.InventoryType.WieldWeapon:
                     GameManager.Instance.Player.WieldItem(chosenItem);
                     break;
+                case InventoryElement.InventoryType.WearArmor:
+                    GameManager.Instance.Player.TryWearArmor(chosenItem);
+                    break;
                 default:
+                    throw new NotImplementedException();
                     break;
             }
         }
@@ -113,6 +125,9 @@ namespace DungeonPrisonConsoleRenderer
                     break;
                 case ConsoleKey.Enter:
                     PressedKeys.Add(InputKey.Accept);
+                    break;
+                case ConsoleKey.E:
+                    PressedKeys.Add(InputKey.EquipArmor);
                     break;
             }
         }

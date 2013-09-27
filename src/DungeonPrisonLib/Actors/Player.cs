@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DungeonPrisonLib.Actors.Items;
 
 namespace DungeonPrisonLib.Actors
 {
@@ -13,7 +14,31 @@ namespace DungeonPrisonLib.Actors
         {
             ItemWieldedEvent += Player_ItemWieldedEvent;
             ItemPickedUpEvent += Player_ItemPickedUpEvent;
+            ArmorWorn += Player_ArmorWorn;
             Depth = -2;
+        }
+
+        void Player_ArmorWorn(Conclusion conclusion, Armor armor, Armor newArmor)
+        {
+            switch (conclusion)
+            {
+                case Conclusion.Succes:
+                    if (armor != null)
+                    {
+                        GameManager.Instance.Log.AddMessage("You remove your " + armor.GameName);
+                    }
+                    if (newArmor != null)
+                    {
+                        GameManager.Instance.Log.AddMessage("You putting on your " + newArmor.GameName);
+                    }
+                    break;
+                case Conclusion.Fail:
+                    GameManager.Instance.Log.AddMessage("Cannot wear that");
+                    break;
+                default:
+                    break;
+            }
+            
         }
 
         void Player_ItemPickedUpEvent(Items.Item item)

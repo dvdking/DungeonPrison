@@ -3,3 +3,8 @@ C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\bin\Debug\Dun
 C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.csprojResolveAssemblyReference.cache
 C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.dll
 C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.pdb
+D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.csprojResolveAssemblyReference.cache
+D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.dll
+D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonLib\obj\Debug\DungeonPrisonLib.pdb
+D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.dll
+D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonLib\bin\Debug\DungeonPrisonLib.pdb

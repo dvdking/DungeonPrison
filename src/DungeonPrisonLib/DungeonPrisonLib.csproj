@@ -54,6 +54,8 @@
     <Compile Include="Actors\CreaturesGroups\Relation.cs" />
     <Compile Include="Actors\CreaturesGroups\RelationManager.cs" />
     <Compile Include="Actors\Inventory.cs" />
+    <Compile Include="Actors\Items\Armor.cs" />
+    <Compile Include="Actors\Items\ArmorType.cs" />
     <Compile Include="Actors\Items\Item.cs" />
     <Compile Include="Actors\Items\MeleeWeapon.cs" />
     <Compile Include="AStar\AStar.cs" />

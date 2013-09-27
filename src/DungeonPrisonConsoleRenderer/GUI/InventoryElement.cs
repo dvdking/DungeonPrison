@@ -15,7 +15,8 @@ namespace DungeonPrisonConsoleRenderer.GUI
         public enum InventoryType
         {
             Browse,
-            WieldWeapon
+            WieldWeapon,
+            WearArmor
         }
         
         public int ChosenItem;
@@ -74,6 +75,9 @@ namespace DungeonPrisonConsoleRenderer.GUI
                     throw new NotImplementedException();
                     break;
                 case InventoryType.WieldWeapon:
+                case InventoryType.WearArmor:
+                    if (GameManager.Instance.Player.Inventory.GetItems().Count == 0)
+                        break;
                     if (ItemChosen != null)
                     {
                         ItemChosen(_type, GameManager.Instance.Player.Inventory.GetItemWithIndex(ChosenItem));
@@ -105,6 +109,9 @@ namespace DungeonPrisonConsoleRenderer.GUI
                     break;
                 case InventoryType.WieldWeapon:
                     topMessage = "Wield what?";
+                    break;
+                case InventoryType.WearArmor:
+                    topMessage = "Wear what";
                     break;
                 default:
                     break;

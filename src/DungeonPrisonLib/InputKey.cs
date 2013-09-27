@@ -14,6 +14,7 @@ namespace DungeonPrisonLib
         Wait,
         PickUp,
         WieldWeapon,
+        EquipArmor,
         Cancel,
         Accept,
         OpenInventory
