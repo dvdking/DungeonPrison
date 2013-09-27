@@ -90,7 +90,7 @@ namespace DungeonPrisonLib
             Player.Position = TileMap.GetRandomEmptyPlace();
             Player.MaxHealth = 15;
             Player.Health = 15;
-
+            Player.CreateMemory(TileMap);
             _actors.Add(Player);
         }
 
@@ -207,7 +207,10 @@ namespace DungeonPrisonLib
             }
             Player.Update(0.0f, TileMap);
             LOS.UpdateVisibleArea(Player, TileMap);
+            Player.UpdateMemory(LOS, TileMap);
         }
+
+
 
         private void UpdateWorld(float delta)
         {

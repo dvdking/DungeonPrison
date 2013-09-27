@@ -9,5 +9,6 @@
   <Tiles>
     <Tile ch ="#" name ="wall" color="white"/>
     <Tile ch ="." name ="floor" color="white"/>
+    <Tile ch ="." name ="nothing" color="gray"/>
   </Tiles>
 </GraphicsInfo>

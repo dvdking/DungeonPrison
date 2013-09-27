@@ -129,6 +129,10 @@ namespace DungeonPrisonConsoleRenderer
                     return ConsoleColor.White;
                 case "darkgreen":
                     return ConsoleColor.DarkGreen;
+                case "red":
+                    return ConsoleColor.Red;
+                case "gray":
+                    return ConsoleColor.DarkGray;
                 default:
                     return ConsoleColor.Red;//it's set to red so it will be more noticable if there are errors
             }
@@ -142,6 +146,8 @@ namespace DungeonPrisonConsoleRenderer
                     return TileType.Wall;
                 case "floor":
                     return TileType.Floor;
+                case "nothing":
+                    return TileType.Nothing;
                 default:
                     return TileType.Nothing;
             }
@@ -203,9 +209,16 @@ namespace DungeonPrisonConsoleRenderer
                     if (!tileMap.InBounds(i, j))
                         continue;
                     if (!GameManager.Instance.LOS.IsVisible(screenPosX, screenPosY))
-                        continue;
+                    {
+                        var gi = tileGraphicsMap[player.GetMemoryTile(i, j).Type];
+                        gi.Color = ConsoleColor.DarkBlue;
+                        DrawGraphicsInfoToBuffer(screenPosX, screenPosY, gi);
+                    }
+                    else
+                    {
+                        DrawGraphicsInfoToBuffer(screenPosX, screenPosY, tileGraphicsMap[tileMap.GetTile(i, j).Type]);
+                    }
 
-                    DrawGraphicsInfoToBuffer(screenPosX, screenPosY, tileGraphicsMap[tileMap.GetTile(i, j).Type]);
                 }
             }
         }
