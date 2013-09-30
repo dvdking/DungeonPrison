@@ -40,15 +40,16 @@ namespace DungeonPrisonLib.WorldGenerator
 
         private void SettleCreatures(int x, int y, int z, WorldChunk chunk, WorldChunk[, ,] chunks)
         {    
-            int groupPopulation = RandomTool.NextInt(0, 10);
+            int groupPopulation = RandomTool.NextInt(1, 10);
 
 
-            Point position = chunk.TileMap.GetRandomEmptyPlace();
+            
             List<Creature> creatures = new List<Creature>();
             for (int j = 0; j < Settings.GroupsCount; j++)
             {
+                Point position = chunk.TileMap.GetRandomEmptyPlace();
                 Creature baseCreature = new Creature();
-                baseCreature.MaxHealth = 5 + RandomTool.NextInt(0, 10);
+                baseCreature.MaxHealth = RandomTool.NextInt(15, 30);
                 baseCreature.Name = "Human";
 
                 CreatureGroup group = GameManager.Instance.GroupsManager.GetGroup(j);

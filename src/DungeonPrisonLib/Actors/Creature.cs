@@ -51,7 +51,7 @@ namespace DungeonPrisonLib.Actors
             WornArmor = new Dictionary<ArmorPlace, Armor>();
 
             Inventory = new Inventory();
-            RelationManager = new RelationManager(this);
+            RelationManager = new RelationManager(this, GameManager.Instance.GroupsManager);
             CreatureGroup = null;
 
             Depth = -1;
@@ -95,7 +95,7 @@ namespace DungeonPrisonLib.Actors
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
             creature.Health -= attackInfo.Damage;
             
-            creature.RelationManager.ChangeRelation(this, (int)(-30*(float)(attackInfo.Damage*Health*1.25f)/(float)MaxHealth*0.75f));// todo adjust these to according to creature
+            creature.RelationManager.ChangeRelation(this, (int)(-60*(float)(attackInfo.Damage*Health*1.25f)/(float)MaxHealth*0.75f));// todo adjust these to according to creature
             creature.CheckDeath();
 
             if (creature.WasAttackedEvent != null)

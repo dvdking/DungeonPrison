@@ -10,10 +10,12 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
     {
         private List<CreatureRelation> _relations = new List<CreatureRelation>();
         private Creature _creature;
+        private CreatureGroupsManager _groupsManager;
 
-        public RelationManager(Creature creature)
+        public RelationManager(Creature creature, CreatureGroupsManager groupsManager)
         {
             _creature = creature;
+            _groupsManager = groupsManager;
             Debug.Assert(_creature != null, "creature is null");
         }
 
@@ -23,6 +25,9 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             relation.Creature = creature;
             relation.RelationAmount = 0;
             _relations.Add(relation);
+
+            UpdateGroupsRelations(creature);
+
             return relation;
         }
 
@@ -35,6 +40,8 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
                 relation = AddRelation(creature);
             }
 
+            UpdateGroupsRelations(creature);
+
             relation.RelationAmount += amount;
 
             if (relation.RelationAmount < -100)
@@ -42,6 +49,19 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             else if (relation.RelationAmount > 100)
                 relation.RelationAmount = 100;
         }
+
+        private void UpdateGroupsRelations(Creature creature)
+        {
+            if (_creature.CreatureGroup != null && creature.CreatureGroup != null)
+            {
+                if (!_creature.CreatureGroup.HasRelation(creature.CreatureGroup))
+                {
+                    _groupsManager.CreateGroupRelation(_creature.CreatureGroup, _creature.CreatureGroup);
+                }
+            }
+        }
+
+
 
         public int GetRelationToGroup(CreatureGroup group)
         {
@@ -72,8 +92,15 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             }
 
             //todo change dynamicaly these values according to creature's feelings
-            var k1 = 0.3f;
-            var k2 = 0.7f;
+            var k1 = 0.9f;
+            var k2 = 0.1f;
+
+
+            if (_creature.CreatureGroup == null || creature.CreatureGroup == null)
+            {
+                k2 = 0;
+                k1 = 1;
+            }
 
             return (int)(groupRelation*k2 + creatureRelation*k1);
         }

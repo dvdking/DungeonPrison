@@ -16,6 +16,12 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
 
         public bool IsEmpty { get { return GameGroups == null || GameGroups.Count == 0; } }
 
+        public void CreateGroupRelation(CreatureGroup gr1, CreatureGroup gr2)
+        {
+            gr1.AddGroupRelation(gr2);
+            gr2.AddGroupRelation(gr1);
+        }
+
         public CreatureGroup AddGroup(string groupName)
         {
             var group = new CreatureGroup();

@@ -130,6 +130,12 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             return relation.GetRelationAmountToGroup();
         }
 
+        
+        internal bool HasRelation(CreatureGroup gr2)
+        {
+            return Relations.Find(p => p.OtherGroup == gr2) != null;
+        }
+
         public override string ToString()
         {
             return GroupName.Length == 0 ? "Unknown group" : GroupName;
