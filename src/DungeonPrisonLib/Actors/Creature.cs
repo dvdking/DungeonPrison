@@ -94,8 +94,12 @@ namespace DungeonPrisonLib.Actors
 
             GameManager.Instance.Log.AddMessage(attackInfo.Message);
             creature.Health -= attackInfo.Damage;
-            
-            creature.RelationManager.ChangeRelation(this, (int)(-60*(float)(attackInfo.Damage*Health*1.25f)/(float)MaxHealth*0.75f));// todo adjust these to according to creature
+            int relationChangeAmount = (int)(-60 * (float)(attackInfo.Damage * Health * 1.25f) / (float)MaxHealth * 0.75f);// todo adjust these to according to creature
+
+            creature.RelationManager.ChangeRelation(this, relationChangeAmount);
+            UpdateVisibleGroupRelation(creature, attackInfo, relationChangeAmount);
+
+
             creature.CheckDeath();
 
             if (creature.WasAttackedEvent != null)
@@ -104,6 +108,24 @@ namespace DungeonPrisonLib.Actors
             }
 
             UsedTime += 1.0f;
+        }
+
+        private void UpdateVisibleGroupRelation(Creature creature, AttackInfo attackInfo, int relationChangeAmount)
+        {
+            var actors = GameManager.Instance.GetVisibleActors(this);
+
+            foreach (var actor in actors)
+            {
+                if (actor is Creature)
+                {
+                    var c = actor as Creature;
+
+                    if (c.CreatureGroup == CreatureGroup)
+                    {
+                        c.RelationManager.ChangeRelation(creature, relationChangeAmount);
+                    }
+                }
+            }
         }
 
         public void CheckDeath()
@@ -151,6 +173,7 @@ namespace DungeonPrisonLib.Actors
 
             UsedTime += 1.0f;
         }
+
 
         public void Wait()
         {

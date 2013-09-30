@@ -92,11 +92,17 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             }
 
             //todo change dynamicaly these values according to creature's feelings
-            var k1 = 0.9f;
-            var k2 = 0.1f;
+            var k1 = 0.5f;
+            var k2 = 0.5f;
 
 
             if (_creature.CreatureGroup == null || creature.CreatureGroup == null)
+            {
+                k2 = 0;
+                k1 = 1;
+            }
+
+            if (creatureRelation < -50)
             {
                 k2 = 0;
                 k1 = 1;

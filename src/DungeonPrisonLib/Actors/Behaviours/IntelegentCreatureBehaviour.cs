@@ -41,7 +41,9 @@ namespace DungeonPrisonLib.Actors.Behaviours
                 //do something randomly
                 int dirX = RandomTool.NextBool() ? RandomTool.NextSign() : 0;
                 int dirY = dirX == 0 ? RandomTool.NextSign() : 0;
-                Creature.Move(dirX, dirY, tileMap);
+
+                if(GameManager.Instance.IsPositionFree<Creature>(Creature.X + dirX, Creature.Y + dirY))
+                    Creature.Move(dirX, dirY, tileMap);
             }
         }
 

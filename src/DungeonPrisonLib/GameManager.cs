@@ -173,6 +173,18 @@ namespace DungeonPrisonLib
             return null;
         }
 
+
+        public bool IsPositionFree<T>(int x, int y) where T: Actor
+        {
+            List<Actor> actors = GetActorsAtPosition(x, y);
+            foreach (var item in actors)
+            {
+                if (item is T)
+                    return false;
+            }
+            return true;
+        }
+
         public List<Actor> GetActorsAtPosition(int x, int y)
         {
             List<Actor> actors = new List<Actor>();
