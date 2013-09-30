@@ -14,3 +14,4 @@ D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\Dungeon
 D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\DungeonPrisonLib.dll
 D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\DungeonPrisonLib.pdb
 D:\soad\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\obj\x86\Debug\DungeonPrisonConsoleRenderer.csprojResolveAssemblyReference.cache
+C:\Users\sergey.krivich\Dropbox\DungeonPrison\src\DungeonPrisonConsoleRenderer\bin\Debug\Content\Names.db

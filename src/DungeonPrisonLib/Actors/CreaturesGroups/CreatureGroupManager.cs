@@ -14,6 +14,8 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             GameGroups = new List<CreatureGroup>();
         }
 
+        public bool IsEmpty { get { return GameGroups == null || GameGroups.Count == 0; } }
+
         public CreatureGroup AddGroup(string groupName)
         {
             var group = new CreatureGroup();
@@ -22,9 +24,19 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
             return group;
         }
 
+        public CreatureGroup GetGroup(int index)
+        {
+            return GameGroups[index];
+        }
+
         public CreatureGroup GetGroup(string groupName)
         {
             return GameGroups.Find(p => p.GroupName == groupName);
+        }
+
+        internal CreatureGroup GetRandomGroup()
+        {
+            return GameGroups[RandomTool.NextInt(GameGroups.Count - 1)];
         }
     }
 }

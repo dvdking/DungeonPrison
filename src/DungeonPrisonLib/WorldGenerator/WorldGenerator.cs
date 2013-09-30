@@ -1,6 +1,10 @@
-﻿using DungeonPrisonLib.World;
+﻿using DungeonPrisonLib.Actors;
+using DungeonPrisonLib.Actors.Behaviours;
+using DungeonPrisonLib.Actors.CreaturesGroups;
+using DungeonPrisonLib.World;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -21,7 +25,74 @@ namespace DungeonPrisonLib.WorldGenerator
 
             chunk.TileMap = _generator.GenerateTileMap(Settings.TileMapSize.X, Settings.TileMapSize.Y, TlleMapType.NeutralDungeon);
 
+            SettleCreatures(x, y, z, chunk, chunks);
+
             return chunk;
+        }
+
+        public void GenerateGroups()
+        {
+            for (int i = 0; i < Settings.GroupsCount; i++)
+            {
+                GameManager.Instance.GroupsManager.AddGroup(RandomNameGenerator.NextName());
+            }
+        }
+
+        private void SettleCreatures(int x, int y, int z, WorldChunk chunk, WorldChunk[, ,] chunks)
+        {    
+            int groupPopulation = RandomTool.NextInt(0, 10);
+
+
+            Point position = chunk.TileMap.GetRandomEmptyPlace();
+            List<Creature> creatures = new List<Creature>();
+            for (int j = 0; j < Settings.GroupsCount; j++)
+            {
+                Creature baseCreature = new Creature();
+                baseCreature.MaxHealth = 5 + RandomTool.NextInt(0, 10);
+                baseCreature.Name = "Human";
+
+                CreatureGroup group = GameManager.Instance.GroupsManager.GetGroup(j);
+                creatures.Clear();
+
+                for (int i = 0; i < groupPopulation; i++)
+                {
+                    Creature creature = new Creature();
+                    creature.AddToGroup(group);
+
+                    creature.MaxHealth = baseCreature.MaxHealth + RandomTool.NextInt(0,3);
+                    creature.Health = creature.MaxHealth;
+
+                    creature.Name = baseCreature.Name;
+                    creature.GameName = RandomNameGenerator.NextName();
+
+                    creature.SetBehaviour(new IntelegentCreatureBehaviour(creature));
+
+                    creature.Position = position;
+
+                    creatures.Add(creature);
+                    chunk.AddActor(creature);
+                }
+                ConnectCreatures(creatures);
+            }
+
+            
+
+
+        }
+
+        private void ConnectCreatures(List<Creature> creatures)
+        {
+            for (int i = 0; i < creatures.Count(); i++)
+            {
+                for (int j = 0; j < creatures.Count(); j++)
+                {
+                    if (i != j)
+                    {
+                        creatures[i].RelationManager.AddRelation(creatures[j]);
+                        creatures[i].RelationManager.ChangeRelation(creatures[j], 60 + RandomTool.NextInt(0, 20));
+                    }
+                }
+            }
         }
     }
 }

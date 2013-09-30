@@ -73,11 +73,13 @@
     <Compile Include="LOS.cs" />
     <Compile Include="Point3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomNameGenerator.cs" />
     <Compile Include="RandomTool.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="TileMapType.cs" />
+    <Compile Include="WorldGenerator\CreatureGroupManager.cs" />
     <Compile Include="WorldGenerator\NeutralDungeonGenerator.cs" />
     <Compile Include="WorldGenerator\TileMapGenerator.cs" />
     <Compile Include="WorldGenerator\WorldGenerator.cs" />

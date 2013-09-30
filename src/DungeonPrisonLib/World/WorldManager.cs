@@ -26,6 +26,8 @@ namespace DungeonPrisonLib.World
             SizeZ = sizeZ;
 
             _worldGenerator = new WorldGen();
+            if(GameManager.Instance.GroupsManager.IsEmpty)
+                _worldGenerator.GenerateGroups();
 
             _world = new WorldChunk[SizeX, SizeY, SizeZ];
         }

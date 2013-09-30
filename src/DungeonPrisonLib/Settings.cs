@@ -13,10 +13,16 @@ namespace DungeonPrisonLib
         public const string SaveFolder ="Saves";
         public const string CurrentPlayer = "TestPlayer";
 
+        public const string DataFolder = "Content";
+
+
         static public string SaveDirectory { get { return SaveFolder + "\\" + CurrentPlayer; } }
 
         public const int WorldSizeX = 10, WorldSizeY = 10, WorldSizeZ = 10;
-        public readonly static  Point TileMapSize = new Point(128,128);
+        public readonly static  Point TileMapSize = new Point(32,32);
+        public const string RandomNamesDB = DataFolder + "\\Names.db";
+
+        public const int GroupsCount = 4;
 
         static Settings()
         {

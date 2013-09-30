@@ -31,7 +31,7 @@ namespace DungeonPrisonLib
         public IInput Input{get; private set;}
         public Log Log{get; private set;}
         public LOS LOS { get; private set; }
-        public CreatureGroupsManager GroupManager { get; private set; }
+        public CreatureGroupsManager GroupsManager { get; private set; }
 
 
         public WorldManager WorldManager { get; private set; }
@@ -45,21 +45,26 @@ namespace DungeonPrisonLib
             _renderer = renderer;
             Input = input;
 
-            Log = new Log();
-            LOS = new LOS();
-            GroupManager = new CreatureGroupsManager();
-            WorldManager = new WorldManager(Settings.WorldSizeX, Settings.WorldSizeY, Settings.WorldSizeZ);
-            TileMapGenerator gen = new TileMapGenerator();
-
-
-            CurrentChunk = WorldManager.GetChunk(5, 5, 5);
-
             //TileMap = gen.GenerateTileMap(256, 256, TlleMapType.NeutralDungeon);
            // TileMap.PrintMapToFile("map.bmp");
         }
 
         public void InitGame()
         {
+            Log = new Log();
+            LOS = new LOS();
+            RandomNameGenerator.LoadDB(Settings.RandomNamesDB);
+            GroupsManager = new CreatureGroupsManager();
+
+            WorldManager = new WorldManager(Settings.WorldSizeX, Settings.WorldSizeY, Settings.WorldSizeZ);
+            TileMapGenerator gen = new TileMapGenerator();
+
+
+            CurrentChunk = WorldManager.GetChunk(5, 5, 5);
+
+            
+
+
             CreateTestItems();
 
             CreateTestGroups();
@@ -84,7 +89,7 @@ namespace DungeonPrisonLib
             Player.SetBehaviour(new PlayerBehaviour(Player));
             Player.Name = "you";
             Player.GameName = "you";
-            Player.AddToGroup("Klarks");
+        //    Player.AddToGroup("Klarks");
             Player.Position = TileMap.GetRandomEmptyPlace();
             Player.MaxHealth = 15;
             Player.Health = 15;
@@ -94,54 +99,54 @@ namespace DungeonPrisonLib
 
         private void CreateTestGroups()
         {
-            var bohels = GroupManager.AddGroup("Bohels");
-            var klarks = GroupManager.AddGroup("Klarks");
-            var animal = GroupManager.AddGroup("Animal");
+            //var bohels = GroupsManager.AddGroup("Bohels");
+            //var klarks = GroupsManager.AddGroup("Klarks");
+            //var animal = GroupsManager.AddGroup("Animal");
 
-            bohels.AddGroupRelation(klarks);
-            klarks.AddGroupRelation(bohels);
+            //bohels.AddGroupRelation(klarks);
+            //klarks.AddGroupRelation(bohels);
         }
 
         private void CreateTestCreatures()
         {
-            var act = new Creature();
-            act.SetBehaviour(new BrainlessSlimeBehaviour(act));
-            act.Name = "BrainlessSlime";
-            act.GameName = "brainless slime";
-            act.AddToGroup("Animal");
-            act.X = 3;
-            act.Y = 5;
-            act.MaxHealth = 5;
-            act.Health = 5;
-            CurrentChunk.AddActor(act);
+            //var act = new Creature();
+            //act.SetBehaviour(new BrainlessSlimeBehaviour(act));
+            //act.Name = "BrainlessSlime";
+            //act.GameName = "brainless slime";
+            //act.AddToGroup("Animal");
+            //act.X = 3;
+            //act.Y = 5;
+            //act.MaxHealth = 5;
+            //act.Health = 5;
+            //CurrentChunk.AddActor(act);
 
-            var act1 = new Creature();
-            act1.SetBehaviour(new IntelegentCreatureBehaviour(act1));
-            act1.Name = "Human";
-            act1.GameName = "David";
-            act1.AddToGroup("Bohels");
-            act1.X = 4;
-            act1.Y = 4;
-            act1.MaxHealth = 10;
-            act1.Health = 10;
-            CurrentChunk.AddActor(act1);
+            //var act1 = new Creature();
+            //act1.SetBehaviour(new IntelegentCreatureBehaviour(act1));
+            //act1.Name = "Human";
+            //act1.GameName = "David";
+            //act1.AddToGroup("Bohels");
+            //act1.X = 4;
+            //act1.Y = 4;
+            //act1.MaxHealth = 10;
+            //act1.Health = 10;
+            //CurrentChunk.AddActor(act1);
 
-            var act2 = new Creature();
-            act2.SetBehaviour(new IntelegentCreatureBehaviour(act2));
-            act2.Name = "Human";
-            act2.GameName = "John";
-            act2.AddToGroup("Klarks");
-            act2.X = 5;
-            act2.Y = 5;
-            act2.MaxHealth = 15;
-            act2.Health = 15;
-            CurrentChunk.AddActor(act2);
+            //var act2 = new Creature();
+            //act2.SetBehaviour(new IntelegentCreatureBehaviour(act2));
+            //act2.Name = "Human";
+            //act2.GameName = "John";
+            //act2.AddToGroup("Klarks");
+            //act2.X = 5;
+            //act2.Y = 5;
+            //act2.MaxHealth = 15;
+            //act2.Health = 15;
+            //CurrentChunk.AddActor(act2);
 
-            act1.RelationManager.AddRelation(act2);
-            act1.RelationManager.ChangeRelation(act2, -80);
+            //act1.RelationManager.AddRelation(act2);
+            //act1.RelationManager.ChangeRelation(act2, -80);
 
-            act2.RelationManager.AddRelation(act1);
-            act2.RelationManager.ChangeRelation(act1, -80);
+            //act2.RelationManager.AddRelation(act1);
+            //act2.RelationManager.ChangeRelation(act1, -80);
         }
 
         public void Run()

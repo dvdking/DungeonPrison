@@ -82,7 +82,7 @@ namespace DungeonPrisonLib.Actors
 
         public void AddToGroup(string groupName)
         {
-            AddToGroup(GameManager.Instance.GroupManager.GetGroup(groupName));
+            AddToGroup(GameManager.Instance.GroupsManager.GetGroup(groupName));
         }
 
         internal void Attack(Creature creature, AttackInfo attackInfo)
