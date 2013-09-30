@@ -2,6 +2,7 @@
 using DungeonPrisonLib.Actors.Behaviours;
 using DungeonPrisonLib.Actors.CreaturesGroups;
 using DungeonPrisonLib.Actors.Items;
+using DungeonPrisonLib.World;
 using DungeonPrisonLib.WorldGenerator;
 using System;
 using System.Collections.Generic;
@@ -32,12 +33,10 @@ namespace DungeonPrisonLib
         public LOS LOS { get; private set; }
         public CreatureGroupsManager GroupManager { get; private set; }
 
-        public TileMap TileMap{get; private set;}
 
-        List<Actor> _actors;
-
-        Queue<Actor> _actorsToAdd;
-        Queue<Actor> _actorsToRemove;
+        public WorldManager WorldManager { get; private set; }
+        public WorldChunk CurrentChunk { get; private set; }
+        public TileMap TileMap { get { return CurrentChunk.TileMap; } }
 
         public Player Player{get; private set;}
 
@@ -49,15 +48,14 @@ namespace DungeonPrisonLib
             Log = new Log();
             LOS = new LOS();
             GroupManager = new CreatureGroupsManager();
-
-            _actors = new List<Actor>(128);
-            _actorsToAdd = new Queue<Actor>(16);
-            _actorsToRemove = new Queue<Actor>(16);
-
+            WorldManager = new WorldManager(Settings.WorldSizeX, Settings.WorldSizeY, Settings.WorldSizeZ);
             TileMapGenerator gen = new TileMapGenerator();
 
-            TileMap = gen.GenerateTileMap(256, 256, TlleMapType.NeutralDungeon);
-            TileMap.PrintMapToFile("map.bmp");
+
+            CurrentChunk = WorldManager.GetChunk(5, 5, 5);
+
+            //TileMap = gen.GenerateTileMap(256, 256, TlleMapType.NeutralDungeon);
+           // TileMap.PrintMapToFile("map.bmp");
         }
 
         public void InitGame()
@@ -77,7 +75,7 @@ namespace DungeonPrisonLib
             weapon.X = 4;
             weapon.Y = 5;
             weapon.Damage = 5;
-            _actors.Add(weapon);
+            CurrentChunk.AddActor(weapon);
         }
 
         private void CreatePlayer()
@@ -91,7 +89,7 @@ namespace DungeonPrisonLib
             Player.MaxHealth = 15;
             Player.Health = 15;
             Player.CreateMemory(TileMap);
-            _actors.Add(Player);
+            CurrentChunk.AddActor(Player);
         }
 
         private void CreateTestGroups()
@@ -115,7 +113,7 @@ namespace DungeonPrisonLib
             act.Y = 5;
             act.MaxHealth = 5;
             act.Health = 5;
-            _actors.Add(act);
+            CurrentChunk.AddActor(act);
 
             var act1 = new Creature();
             act1.SetBehaviour(new IntelegentCreatureBehaviour(act1));
@@ -126,7 +124,7 @@ namespace DungeonPrisonLib
             act1.Y = 4;
             act1.MaxHealth = 10;
             act1.Health = 10;
-            _actors.Add(act1);
+            CurrentChunk.AddActor(act1);
 
             var act2 = new Creature();
             act2.SetBehaviour(new IntelegentCreatureBehaviour(act2));
@@ -137,7 +135,7 @@ namespace DungeonPrisonLib
             act2.Y = 5;
             act2.MaxHealth = 15;
             act2.Health = 15;
-            _actors.Add(act2);
+            CurrentChunk.AddActor(act2);
 
             act1.RelationManager.AddRelation(act2);
             act1.RelationManager.ChangeRelation(act2, -80);
@@ -160,7 +158,7 @@ namespace DungeonPrisonLib
 
         public Actor GetActorAtPosition(int x, int y)
         {
-            foreach (var actor in _actors)
+            foreach (var actor in CurrentChunk.Actors)
             {
                 if (actor.X == x && actor.Y == y)
                 {
@@ -173,7 +171,7 @@ namespace DungeonPrisonLib
         public List<Actor> GetActorsAtPosition(int x, int y)
         {
             List<Actor> actors = new List<Actor>();
-            foreach (var a in _actors)
+            foreach (var a in CurrentChunk.Actors)
             {
                 if (a.X == x && a.Y == y)
                 {
@@ -186,7 +184,7 @@ namespace DungeonPrisonLib
         public List<Actor> GetVisibleActors(Actor actor)
         {
             List<Actor> actors = new List<Actor>();
-            foreach (var a in _actors)
+            foreach (var a in CurrentChunk.Actors)
             {
                 if(LOS.InteserectsWall(a, TileMap, actor.X, actor.Y))
                     actors.Add(a);
@@ -196,7 +194,8 @@ namespace DungeonPrisonLib
 
         public void DestroyObject(Actor actor)
         {
-            _actorsToRemove.Enqueue(actor);
+            //_actorsToRemove.Enqueue(actor);
+            CurrentChunk.RemoveActor(actor);
         }
 
         public void Update()
@@ -214,24 +213,22 @@ namespace DungeonPrisonLib
 
         private void UpdateWorld(float delta)
         {
-            foreach (var actor in _actorsToRemove)
-            {
-                _actors.Remove(actor);
-            }
-            _actorsToRemove.Clear();
+            //foreach (var actor in _actorsToRemove)
+            //{
+            //    _actors.Remove(actor);
+            //}
+            //_actorsToRemove.Clear();
 
-            foreach (var actor in _actors)
+            foreach (var actor in CurrentChunk.Actors.ToList())
             {
                 if(actor.IsAlive && actor != Player)
                     actor.Update(delta, TileMap);
-            }
-
-            
+            }            
         }
         public void Draw()
         {
             if (_renderer != null)
-                _renderer.Draw(Player, _actors, TileMap);
+                _renderer.Draw(Player, CurrentChunk.Actors, TileMap);
         }
     }
 }

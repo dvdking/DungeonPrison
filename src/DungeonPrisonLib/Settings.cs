@@ -10,6 +10,14 @@ namespace DungeonPrisonLib
     {
         static public Size PlayerView{get; private set;}
 
+        public const string SaveFolder ="Saves";
+        public const string CurrentPlayer = "TestPlayer";
+
+        static public string SaveDirectory { get { return SaveFolder + "\\" + CurrentPlayer; } }
+
+        public const int WorldSizeX = 10, WorldSizeY = 10, WorldSizeZ = 10;
+        public readonly static  Point TileMapSize = new Point(128,128);
+
         static Settings()
         {
             //SET ALL SETTINGS HERE FOR NOW

@@ -9,11 +9,13 @@ namespace DungeonPrisonLib.Actors
     public abstract class Actor
     {
         public bool IsAlive { get; private set; }
-
+        
         public string Name;
         public string GameName;
 
         public int X, Y;
+
+        public Point3 LastGlobalMapLocation;
 
         public Point Position 
         {

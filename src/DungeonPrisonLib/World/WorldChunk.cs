@@ -1,46 +1,76 @@
-﻿using DungeonPrisonLib.WorldGenerator;
+﻿using DungeonPrisonLib.Actors;
+using DungeonPrisonLib.WorldGenerator;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace DungeonPrisonLib.World
 {
-    class WorldChunk
+    public class WorldChunk
     {
         public int X, Y, Z;
+
+        public Point3 Position
+        {
+            get
+            {
+                return new Point3(X,Y,Z);
+            }
+        }
+
         public TlleMapType Type;
 
-        public TileMap GetTileMap()
+        public List<Actor> Actors{get; private set;}
+        public TileMap TileMap{get; set;}
+
+        private string DirPath { get { return Settings.SaveDirectory + "\\" + "m" + X.ToString() + Y.ToString() + Z.ToString(); } }
+
+        public WorldChunk(int x, int y, int z)
         {
+            X = x;
+            Y = y;
+            Z = z;
+
+            Actors = new List<Actor>();
+        }
+
+        public bool IsLoaded { get { return TileMap != null && Actors != null; } }
+
+        public void AddActor(Actor actor)
+        {
+            actor.LastGlobalMapLocation = Position;
+            Actors.Add(actor);
+        }
+
+        public void RemoveActor(Actor actor)
+        {
+            actor.LastGlobalMapLocation = new Point3(-1, -1, -1);
+            Actors.Remove(actor);
+        }
+
+        public bool TileMapExists()
+        {
+            return File.Exists(DirPath);
+        }
+
+        public void UnloadMap()
+        {
+            TileMap = null;
+        }
+
+        public TileMap LoadTileMap()
+        {
+            TileMap = new TileMap();
             if (TileMapExists())
-            {
-                return LoadTileMap();
-            }
+                TileMap.LoadMap(DirPath);
             else
-            {
-                return GenerateTileMap(Type);
-            }
-        }
+                Debug.Fail("tileMap file does not exsist: " + DirPath);
 
-        private bool TileMapExists()
-        {
-            return false;
-        }
-
-        private TileMap GenerateTileMap(TlleMapType mapType)
-        {
-            return null;
-        }
-
-        private TileMap LoadTileMap()
-        {
-            TileMap tileMap = new TileMap();
-
-
-
-            return null;
+            return TileMap;
         }
     }
 }
