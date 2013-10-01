@@ -58,6 +58,7 @@
     <Compile Include="Actors\Items\ArmorType.cs" />
     <Compile Include="Actors\Items\Item.cs" />
     <Compile Include="Actors\Items\MeleeWeapon.cs" />
+    <Compile Include="Actors\LifeTarget.cs" />
     <Compile Include="AStar\AStar.cs" />
     <Compile Include="AStar\BinaryHeap.cs" />
     <Compile Include="CreatureGroupManager.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="TileMapType.cs" />
-    <Compile Include="WorldGenerator\CreatureGroupManager.cs" />
     <Compile Include="WorldGenerator\NeutralDungeonGenerator.cs" />
     <Compile Include="WorldGenerator\TileMapGenerator.cs" />
     <Compile Include="WorldGenerator\WorldGenerator.cs" />

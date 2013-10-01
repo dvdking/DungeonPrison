@@ -72,6 +72,10 @@ namespace DungeonPrisonLib.WorldGenerator
 
                     creature.Position = position;
 
+                    creature.LifeTarget = LifeTarget.CollectItems;
+
+                    group.SetGroupLeader(creature);
+
                     creatures.Add(creature);
                     chunk.AddActor(creature);
                 }

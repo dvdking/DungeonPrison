@@ -102,7 +102,7 @@ namespace DungeonPrisonLib.Actors
             }
             else
             {
-                GameManager.Instance.Log.AddMessage("You pick up " + item.Name);
+                GameManager.Instance.Log.AddMessage("You pick up " + item.GameName);
             }
         }
 

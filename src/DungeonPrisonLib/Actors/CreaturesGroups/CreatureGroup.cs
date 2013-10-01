@@ -44,6 +44,9 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
 
         private List<GroupRelation> Relations;
 
+        public Creature GroupLeader{get; private set;}
+        public LifeTarget CurrentTarget;
+
         public List<Creature> Creatures;
 
         public CreatureGroup()
@@ -59,6 +62,12 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
                 Group = this,
                 OtherGroup = this,
             });
+        }
+
+        public void SetGroupLeader(Creature creature)
+        {
+            GroupLeader = creature;
+            CurrentTarget = creature.LifeTarget;
         }
 
         public void AddGroupRelation(CreatureGroup group)
@@ -139,6 +148,11 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
         public override string ToString()
         {
             return GroupName.Length == 0 ? "Unknown group" : GroupName;
+        }
+
+        internal bool IsGroupLeader(Creature creature)
+        {
+            return GroupLeader == creature;
         }
     }
 }

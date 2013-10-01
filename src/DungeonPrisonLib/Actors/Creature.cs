@@ -44,6 +44,8 @@ namespace DungeonPrisonLib.Actors
         public RelationManager RelationManager {get; private set;}
         public CreatureGroup CreatureGroup { get; private set; }
 
+        public LifeTarget LifeTarget;
+
         Behaviour _behaviour;
 
         public Creature()
@@ -53,6 +55,8 @@ namespace DungeonPrisonLib.Actors
             Inventory = new Inventory();
             RelationManager = new RelationManager(this, GameManager.Instance.GroupsManager);
             CreatureGroup = null;
+
+            LifeTarget = LifeTarget.NoTarget;
 
             Depth = -1;
         }

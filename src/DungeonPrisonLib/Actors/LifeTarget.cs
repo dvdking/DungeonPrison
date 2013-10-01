@@ -7,6 +7,7 @@ namespace DungeonPrisonLib.Actors
 {
     public enum LifeTarget
     {
+        NoTarget,
         CollectItems,
         KillThings
     }
