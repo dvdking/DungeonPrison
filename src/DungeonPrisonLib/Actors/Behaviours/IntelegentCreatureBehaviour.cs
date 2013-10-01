@@ -57,9 +57,15 @@ namespace DungeonPrisonLib.Actors.Behaviours
             if (_path != null && _path.Count != 0)
             {
                 Point nextPos = _path.Peek();
-                Creature.Move(Math.Sign(-Creature.Position.X + nextPos.X),
-                              Math.Sign(-Creature.Position.Y + nextPos.Y),
-                              tileMap);
+
+                int dirX = Math.Sign(-Creature.Position.X + nextPos.X);
+                int dirY = Math.Sign(-Creature.Position.Y + nextPos.Y);
+
+                if (GameManager.Instance.IsPositionFree<Creature>(Creature.X + dirX, Creature.Y + dirY) ||
+                    GameManager.Instance.GetActorsAtPosition(Creature.X + dirX, Creature.Y + dirY).Any(p => p == _lastTarget))
+                {
+                    Creature.Move(dirX, dirY, tileMap);
+                }
 
                 if (!_lastTarget.IsAlive)
                 {
