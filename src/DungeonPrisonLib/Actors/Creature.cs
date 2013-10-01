@@ -85,6 +85,15 @@ namespace DungeonPrisonLib.Actors
             CreatureGroup.AddCreatureToGroup(this);
         }
 
+        public bool IsPassable(Actor t)
+        {
+            if (t is Creature)
+            {
+                return IsPassable(t as Creature);
+            }
+            return true;
+        }
+
         public bool IsPassable(Creature creature)
         {
             var relationType = creature.RelationManager.GetReletionTypeToCreature(this);

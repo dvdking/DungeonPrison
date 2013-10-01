@@ -174,7 +174,7 @@ namespace DungeonPrisonLib.Actors.Behaviours
 
                 var actorsAtPos = GameManager.Instance.GetActorsAtPosition(Creature.X + dirX, Creature.Y + dirY);
 
-                if (actorsAtPos.Count == 0 || actorsAtPos.All(p => IsPassable(Creature, p)))
+                if (actorsAtPos.Count == 0 || actorsAtPos.All(p => Creature.IsPassable(p)))
                 {
                     Creature.Move(dirX, dirY, tileMap);
                 }
@@ -206,15 +206,6 @@ namespace DungeonPrisonLib.Actors.Behaviours
                 return false;
 
             return _path.Count == 0;
-        }
-
-        private static bool IsPassable(Creature creature, Actor t)
-        {
-            if (t is Creature)
-            {
-                return creature.IsPassable(t as Creature);
-            }
-            return true;
         }
 
         private void UpdateMeetCreatureBehaviour(Creature metCreature)

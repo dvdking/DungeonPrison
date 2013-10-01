@@ -89,7 +89,7 @@ namespace DungeonPrisonLib.AStar
                 return;
             var actors = GameManager.Instance.GetActorsAtPosition(pos.X, pos.Y);
 
-            bool notPassable = actors.Any(t => !IsPassable(creature, t));
+            bool notPassable = actors.Any(t => !creature.IsPassable(t));
             if (notPassable && actors.Count != 0)
             {
                 exploredArea[pos.X, pos.Y] = ExploredArea;
@@ -104,17 +104,9 @@ namespace DungeonPrisonLib.AStar
             };
             exploredArea[pos.X, pos.Y] = ExploredArea;
             openList.Add(node);
-
         }
 
-        private static bool IsPassable(Creature creature, Actor t)
-        {
-            if (t is Creature)
-            {
-                return creature.IsPassable(t as Creature);
-            }
-            return true;
-        }
+
 
 
     }
