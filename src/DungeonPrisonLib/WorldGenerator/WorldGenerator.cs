@@ -1,6 +1,7 @@
 ﻿using DungeonPrisonLib.Actors;
 using DungeonPrisonLib.Actors.Behaviours;
 using DungeonPrisonLib.Actors.CreaturesGroups;
+using DungeonPrisonLib.Actors.Items;
 using DungeonPrisonLib.World;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace DungeonPrisonLib.WorldGenerator
             chunk.TileMap = _generator.GenerateTileMap(Settings.TileMapSize.X, Settings.TileMapSize.Y, TlleMapType.NeutralDungeon);
 
             SettleCreatures(x, y, z, chunk, chunks);
+            SettleItems(chunk);
 
             return chunk;
         }
@@ -93,6 +95,23 @@ namespace DungeonPrisonLib.WorldGenerator
                         creatures[i].RelationManager.ChangeRelation(creatures[j], 60 + RandomTool.NextInt(0, 20));
                     }
                 }
+            }
+        }
+
+        private void SettleItems(WorldChunk chunk)
+        {
+            const int itemsCount = 20;
+
+            for (int i = 0; i < itemsCount; i++)
+            {
+                var p = chunk.TileMap.GetRandomEmptyPlace();
+
+                var item = new MeleeWeapon();
+                item.Name = "Sword";
+                item.Damage = 3 + RandomTool.NextInt(6);
+                item.GameName = "Sword +" + item.Damage.ToString();
+                item.Position = p;
+                chunk.AddActor(item);
             }
         }
     }
