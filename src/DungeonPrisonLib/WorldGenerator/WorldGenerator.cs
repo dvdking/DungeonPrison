@@ -42,7 +42,7 @@ namespace DungeonPrisonLib.WorldGenerator
 
         private void SettleCreatures(int x, int y, int z, WorldChunk chunk, WorldChunk[, ,] chunks)
         {    
-            int groupPopulation = RandomTool.NextInt(1, 10);
+            int groupPopulation = RandomTool.NextInt(1, 1);
 
 
             

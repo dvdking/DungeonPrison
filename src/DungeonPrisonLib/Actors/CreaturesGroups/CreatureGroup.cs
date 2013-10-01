@@ -66,8 +66,23 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
 
         public void SetGroupLeader(Creature creature)
         {
+            if (GroupLeader != null)
+            {
+                GroupLeader.DestroyedEvent -= OnLeaderDestroyed;
+            }
+
             GroupLeader = creature;
             CurrentTarget = creature.LifeTarget;
+            GroupLeader.DestroyedEvent += OnLeaderDestroyed;
+        }
+
+        private void OnLeaderDestroyed(Actor actor)
+        {
+            GroupLeader = null;
+            if (Creatures.Count > 0)
+            {
+                GroupLeader = Creatures[RandomTool.NextInt(Creatures.Count - 1)];//todo change it to not be so random
+            }
         }
 
         public void AddGroupRelation(CreatureGroup group)
@@ -93,7 +108,14 @@ namespace DungeonPrisonLib.Actors.CreaturesGroups
                 return;
             }
 
+            creature.DestroyedEvent += OnCreatureDestroyed;
+
             Creatures.Add(creature);
+        }
+
+        private void OnCreatureDestroyed(Actor actor)
+        {
+            Creatures.Remove(actor as Creature);
         }
 
         public void RemoveCreatureFromGroup(Creature creature)

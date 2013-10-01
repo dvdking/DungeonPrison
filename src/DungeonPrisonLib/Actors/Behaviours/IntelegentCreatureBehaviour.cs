@@ -13,80 +13,58 @@ namespace DungeonPrisonLib.Actors.Behaviours
         private Actor _lastTarget;
         private Point _lastTargetPosition;
         private bool _targetPositionChanged;
-        private Queue<Point> _path;
+        private Stack<Point> _path;
 
         private Point _lastRandomPosition;
+
+        private bool _enemyMet;
        
 
         public IntelegentCreatureBehaviour(Creature actor)
             : base(actor)
         {
+            _lastRandomPosition = new Point(-1, -1);
         }
         public override void Update(float delta, TileMap tileMap)
         {
             var visibleActors = GameManager.Instance.GetVisibleActors(Creature);
-
             foreach (var actor in visibleActors)
             {
                 if (actor == Creature) continue;
 
                 if (actor is Creature)
-                {
+                {                    
                     UpdateMeetCreatureBehaviour(actor as Creature);
                 }
             }
-
-            switch (Creature.LifeTarget)
+            if (!_enemyMet)
             {
-                case LifeTarget.NoTarget:
-                    //do something randomly
-                    int dirX = RandomTool.NextBool() ? RandomTool.NextSign() : 0;
-                    int dirY = dirX == 0 ? RandomTool.NextSign() : 0;
+                switch (Creature.LifeTarget)
+                {
+                    case LifeTarget.NoTarget:
+                        //do something randomly
+                        int dirX = RandomTool.NextBool() ? RandomTool.NextSign() : 0;
+                        int dirY = dirX == 0 ? RandomTool.NextSign() : 0;
 
-                    if (GameManager.Instance.IsPositionFree<Creature>(Creature.X + dirX, Creature.Y + dirY))
-                        Creature.Move(dirX, dirY, tileMap);
-                    break;
-                case LifeTarget.CollectItems:
-                    if (Creature.CreatureGroup == null)// search for items by himself
-                    {
-                        if (visibleActors.Any(p => p is Item))
+                        if (GameManager.Instance.IsPositionFree<Creature>(Creature.X + dirX, Creature.Y + dirY))
+                            Creature.Move(dirX, dirY, tileMap);
+                        break;
+                    case LifeTarget.CollectItems:
+                        if (Creature.CreatureGroup == null)// search for items by himself
                         {
-                            _lastTarget = visibleActors.Find(p => p is Item);
-                            _lastTargetPosition = _lastTarget.Position;
-                            _targetPositionChanged = true;
+                            SearchItemsAlone(tileMap, visibleActors);
                         }
-                        else
+                        else// search for items with leader
                         {
-                            SetNextRandomTarget(tileMap);
+                            SearchItemsGroup(tileMap, visibleActors);
                         }
-                    }
-                    else// search for items with leader
-                    {
-                        if (visibleActors.Any(p => p is Item))
-                        {
-                            _lastTarget = visibleActors.Find(p => p is Item);
-                            _lastTargetPosition = _lastTarget.Position;
-                            _targetPositionChanged = true;
-                        }
-                        else
-                        {
-                            if (Creature.CreatureGroup.IsGroupLeader(Creature))
-                            {
-                                SetNextRandomTarget(tileMap);
-                            }
-                            else
-                            {
-                                _lastTarget = Creature.CreatureGroup.GroupLeader;
-                                _targetPositionChanged = true;
-                            }
-                        }
-                    }
-                    break;
-                case LifeTarget.KillThings:
-                    break;
-                default:
-                    throw new NotImplementedException();
-                    break;
+                        break;
+                    case LifeTarget.KillThings:
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                        break;
+                }
             }
 
             if (_lastTarget != null)
@@ -108,12 +86,53 @@ namespace DungeonPrisonLib.Actors.Behaviours
 
         }
 
+        private void SearchItemsGroup(TileMap tileMap, List<Actor> visibleActors)
+        {
+            if (_lastTarget != null)
+                return;
+
+            if (visibleActors.Any(p => p is Item))
+            {
+                _lastTarget = visibleActors.Find(p => p is Item);
+                _lastTargetPosition = _lastTarget.Position;
+                _targetPositionChanged = true;
+            }
+            else
+            {
+                if (Creature.CreatureGroup.IsGroupLeader(Creature))
+                {
+                    SetNextRandomTarget(tileMap);
+                }
+                else
+                {
+                    _lastTarget = Creature.CreatureGroup.GroupLeader;
+                    _lastTargetPosition = _lastTarget.Position;
+                    _targetPositionChanged = true;                    
+                }
+            }
+        }
+
+        private void SearchItemsAlone(TileMap tileMap, List<Actor> visibleActors)
+        {
+            if (_lastTarget != null)
+                return;
+            if (visibleActors.Any(p => p is Item))
+            {
+                _lastTarget = visibleActors.Find(p => p is Item);
+                _lastTargetPosition = _lastTarget.Position;
+                _targetPositionChanged = true;
+            }
+            else
+            {
+                SetNextRandomTarget(tileMap);
+            }
+        }
+
         private void TargetReached()
         {
             switch (Creature.LifeTarget)
             {
                 case LifeTarget.NoTarget:
-
                     break;
                 case LifeTarget.CollectItems:
                     Creature.PickUpItem();
@@ -132,15 +151,18 @@ namespace DungeonPrisonLib.Actors.Behaviours
             if (_lastRandomPosition.X == -1 && _lastRandomPosition.Y == -1)
             {
                 _lastRandomPosition = tileMap.GetRandomEmptyPlace();
-            }
-            _targetPositionChanged = true;
+                _targetPositionChanged = true;
+            }            
         }
 
         private bool MoveToTarget(TileMap tileMap, Point lastTargetPosition)
         {
             if (_targetPositionChanged)
             {
-                _path = AStar.AStar.FindPath(Creature.Position, lastTargetPosition, tileMap);
+                _path = AStar.AStar.FindPath(Creature, Creature.Position, lastTargetPosition, tileMap);
+                if (_path == null)
+                    return true;
+                _path.Pop();
             }
 
             if (_path != null && _path.Count != 0)
@@ -150,17 +172,26 @@ namespace DungeonPrisonLib.Actors.Behaviours
                 int dirX = Math.Sign(-Creature.Position.X + nextPos.X);
                 int dirY = Math.Sign(-Creature.Position.Y + nextPos.Y);
 
-                if (GameManager.Instance.IsPositionFree<Creature>(Creature.X + dirX, Creature.Y + dirY) ||
-                    GameManager.Instance.GetActorsAtPosition(Creature.X + dirX, Creature.Y + dirY).Any(p => p == _lastTarget))
+                var actorsAtPos = GameManager.Instance.GetActorsAtPosition(Creature.X + dirX, Creature.Y + dirY);
+
+                if (actorsAtPos.Count == 0 || actorsAtPos.All(p => IsPassable(Creature, p)))
                 {
                     Creature.Move(dirX, dirY, tileMap);
                 }
-
-                if (!_lastTarget.IsAlive)
+                else
                 {
-                    _lastTarget = null;
-                    _path.Clear();
-                    return true;
+                    _targetPositionChanged = true;
+                    return false;
+                }
+
+                if (_lastTarget != null)
+                {
+                    if (!_lastTarget.IsAlive)
+                    {
+                        _lastTarget = null;
+                        _path.Clear();
+                        return true;
+                    }
                 }
                 
                 _targetPositionChanged = false;
@@ -168,13 +199,22 @@ namespace DungeonPrisonLib.Actors.Behaviours
 
                 if (nextPos == Creature.Position)
                 {
-                    _path.Dequeue();// remove element only if we actualy moved that way
+                    _path.Pop();// remove element only if we actualy moved that way
                 }
             }
             if (_path == null)
                 return false;
 
             return _path.Count == 0;
+        }
+
+        private static bool IsPassable(Creature creature, Actor t)
+        {
+            if (t is Creature)
+            {
+                return creature.IsPassable(t as Creature);
+            }
+            return true;
         }
 
         private void UpdateMeetCreatureBehaviour(Creature metCreature)
@@ -189,6 +229,7 @@ namespace DungeonPrisonLib.Actors.Behaviours
                     break;
                 case RelationsTypes.Enemies:
                     OnMeetEnemy(metCreature);
+
                     break;
                 case RelationsTypes.Neutral:
                     break;
@@ -202,7 +243,8 @@ namespace DungeonPrisonLib.Actors.Behaviours
 
         private void OnMeetEnemy(Creature metCreature)
         {
-            if (_lastTarget == null)
+            _enemyMet = true;
+          //  if (_lastTarget == null)
             {
                 _lastTarget = metCreature;
             }

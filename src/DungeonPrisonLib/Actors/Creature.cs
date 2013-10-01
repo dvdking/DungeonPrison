@@ -22,6 +22,7 @@ namespace DungeonPrisonLib.Actors
             Fail,
             AlreadyWielding
         }
+
         protected delegate void OnItemWielded(Conclusion conclusion, Item item, Item newItem);
         protected delegate void OnItemPickedUp(Item item);
         protected delegate void OnArmorWorn(Conclusion conclusion, Armor armor, Armor newArmor);
@@ -82,6 +83,23 @@ namespace DungeonPrisonLib.Actors
 
             CreatureGroup = group;
             CreatureGroup.AddCreatureToGroup(this);
+        }
+
+        public bool IsPassable(Creature creature)
+        {
+            var relationType = creature.RelationManager.GetReletionTypeToCreature(this);
+
+            switch (relationType)
+            {
+                case RelationsTypes.Enemies:
+                case RelationsTypes.Unknown:
+                    return true;
+                case RelationsTypes.Neutral:
+                  
+                case RelationsTypes.Freindly:
+                    return false;
+            }
+            return true;
         }
 
         public void AddToGroup(string groupName)

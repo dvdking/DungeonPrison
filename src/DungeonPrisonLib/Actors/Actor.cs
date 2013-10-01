@@ -8,6 +8,9 @@ namespace DungeonPrisonLib.Actors
 {
     public abstract class Actor
     {
+        public delegate void DestroyDelegate(Actor actor);
+        public event DestroyDelegate DestroyedEvent;
+
         public bool IsAlive { get; private set; }
         
         public string Name;
@@ -43,6 +46,12 @@ namespace DungeonPrisonLib.Actors
         {
             GameManager.Instance.DestroyObject(this);
             GameManager.Instance.Log.AddMessage(GameName == "you" ? "you are dead" : GameName + " is dead");
+
+            if (DestroyedEvent != null)
+            {
+                DestroyedEvent(this);
+            }
+
             IsAlive = false;
         }
     }
